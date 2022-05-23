@@ -1,14 +1,24 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'firebase_tools.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'database/firebase_options.dart';
+import 'database/firebase_tools.dart';
+import 'database/hive_tools.dart';
 
 void main() async {
+  // Firebase
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Hive
+  await Hive.initFlutter();
+  Hive.registerAdapter(ThemeAdapter());
+  Hive.registerAdapter(SoundAdapter());
+  Hive.registerAdapter(ImageAdapter());
+
   runApp(const MyApp());
 }
 
