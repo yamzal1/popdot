@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'theme.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,7 +11,21 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text("Image from assets"),
         ),
-        body: Image.asset('assets/images/Popdot_final.PNG'), //   <--- image
+        body:  Center(
+          child: Builder(
+            builder: (context) {
+              return ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ClassTheme()),
+                  );            },
+                child: const Text('Page des details'),
+              );
+            }
+          ),
+        )
+
       ),
     );
   }
