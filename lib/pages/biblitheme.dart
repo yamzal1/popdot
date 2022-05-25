@@ -4,7 +4,7 @@ class BibliTheme extends StatelessWidget {
   Icon test = Icon(Icons.flight_outlined);
   @override
   Widget build(BuildContext context) {
-    const title = 'Bibliothèque thèmes';
+    const title = 'Bibliothèque thèmes lksqjzql';
 
     return MaterialApp(
       title: title,
