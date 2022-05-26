@@ -38,10 +38,10 @@ class Sound {
   @HiveField(1)
   String icon;
 
-  @override
-  String toString() {
-    return name;
-  }
+  // @override
+  // String toString() {
+  //   return name;
+  // }
 }
 
 @HiveType(typeId: 86)

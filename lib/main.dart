@@ -16,13 +16,20 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-
   // Hive
   await Hive.initFlutter();
   Hive.registerAdapter(ThemeAdapter());
   Hive.registerAdapter(SoundAdapter());
   Hive.registerAdapter(ImageAdapter());
 
+  var sons = await Hive.openBox<Sound>('SoundBox');
+  // sons.put(0, Sound(name: "titre", icon: "icone"));
+  // sons.clear();
+  print(sons.values.toList().cast<Sound>());
+  print(sons.keys);
+  print(sons.values);
+  var test = await sons.get(0).toString();
+  print(test);
   runApp(const MyApp());
 }
 
@@ -40,48 +47,46 @@ class MyApp extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Image.asset('images/logo.png'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Builder(builder: (context) {
+                return ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Details()),
+                    );
+                  },
+                  child: const Text('Page des details'),
 
-    Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Builder(builder: (context) {
-    return ElevatedButton(
-    onPressed: () {
-    Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const Details()),
-    );
-    },
-    child: const Text('Page des details'),
-    );
-    }),
-    ),
-    Builder(builder: (context) {
-    return ElevatedButton(
-    onPressed: () {
-    Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => ClassTheme()),
-    );
-    },
-    child: const Text('Page Louis'),
-    );
-    }),
-    Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Builder(builder: (context) {
-    return ElevatedButton(
-    onPressed: () {
-    Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => BibliTheme()),
-    );
-    },
-    child: const Text('Page Alex'),
-    );
-    }),
-    ),
-
-
+                );
+              }),
+            ),
+            Builder(builder: (context) {
+              return ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ClassTheme()),
+                  );
+                },
+                child: const Text('Page Louis'),
+              );
+            }),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Builder(builder: (context) {
+                return ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => BibliTheme()),
+                    );
+                  },
+                  child: const Text('Page Alex'),
+                );
+              }),
+            ),
             const Padding(
               padding: EdgeInsets.only(left: 16.0, top: 64.0),
               child: Text(
@@ -120,9 +125,8 @@ class MyApp extends StatelessWidget {
           ],
         ),
       ),
+    );
 
-
-          //   <--- image
-
+    //   <--- image
   }
 }

@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 
+import '../database/hive_tools.dart';
 import '../theme/appcolors.dart';
+import 'package:popdot/main.dart';
 
-class Details extends StatelessWidget {
+import '../widgets/liste_sons.dart';
+
+class Details extends StatefulWidget {
   const Details({Key? key}) : super(key: key);
+
+  @override
+  State<Details> createState() => _DetailsState();
+}
+
+class _DetailsState extends State<Details> {
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +54,24 @@ class Details extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: const Text("Liste des sons : "),
+            ),
+            Column(
+              children: [
+                const SizedBox(height: 24),
+                Expanded(
+                  child: ValueListenableBuilder<Box<Sound>>(
+                    // valueListenable: Sound.getS().listenable(),
+                    valueListenable: Hive.box<Sound>('SoundBox').listenable(),
+                    builder: (context, sons, _) {
+
+
+                      final transactions = sons.values.toList().cast<Sound>();
+
+                      return listeSons(transactions);
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         )),
