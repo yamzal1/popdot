@@ -61,7 +61,9 @@ class MyApp extends StatelessWidget {
                             if (picked != null) {
                               final fileBytes = picked.files.first.bytes;
                               final fileName = picked.files.first.name;
-                              addSound(fileName, fileBytes);
+                              if (fileName.contains(".mp3")) {
+                                addSound(fileName, fileBytes);
+                              }
                             }
                           },
                         ),
