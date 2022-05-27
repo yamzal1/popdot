@@ -22,7 +22,8 @@ class _InfoScreenState extends State<InfoScreen> {
   void initState() {
     super.initState();
     // Get reference to an already opened box
-    soundBox = Hive.box(MyApp.boitesons);
+    // soundBox = Hive.box(MyApp.boitesons);
+    soundBox = Hive.box<Sound>('sounds');
   }
 
   @override
