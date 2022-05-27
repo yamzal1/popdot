@@ -2,12 +2,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:popdot/pages/listingSounds.dart';
 import 'database/firebase_options.dart';
 import 'database/firebase_tools.dart';
 import 'database/hive_tools.dart';
-import 'package:popdot/pages/biblitheme.dart';
-import 'package:popdot/pages/details.dart';
-import 'pages/theme.dart';
 
 void main() async {
   // Firebase
@@ -21,20 +19,19 @@ void main() async {
   Hive.registerAdapter(ThemeAdapter());
   Hive.registerAdapter(SoundAdapter());
   Hive.registerAdapter(ImageAdapter());
+  var sons = await Hive.openBox<Sound>('sounds');
 
-  var sons = await Hive.openBox<Sound>('SoundBox');
-  // sons.put(0, Sound(name: "titre", icon: "icone"));
-  // sons.clear();
   print(sons.values.toList().cast<Sound>());
   print(sons.keys);
   print(sons.values);
-  var test = await sons.get(0).toString();
-  print(test);
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  static const String boitesons = 'sounds';
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,36 +51,11 @@ class MyApp extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Details()),
+                      MaterialPageRoute(builder: (context) => InfoScreen()),
                     );
                   },
                   child: const Text('Page des details'),
 
-                );
-              }),
-            ),
-            Builder(builder: (context) {
-              return ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ClassTheme()),
-                  );
-                },
-                child: const Text('Page Louis'),
-              );
-            }),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Builder(builder: (context) {
-                return ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => BibliTheme()),
-                    );
-                  },
-                  child: const Text('Page Alex'),
                 );
               }),
             ),
@@ -112,7 +84,7 @@ class MyApp extends StatelessWidget {
                             if (picked != null) {
                               final fileBytes = picked.files.first.bytes;
                               final fileName = picked.files.first.name;
-                              if (fileName.contains(".mp3")) {
+                              if (fileName.toString().endsWith(".mp3") || fileName.toString().endsWith(".m4a")) {
                                 addSound(fileName, fileBytes);
                               }
                             }
@@ -128,7 +100,5 @@ class MyApp extends StatelessWidget {
         ),
       ),
     );
-
-    //   <--- image
   }
 }
