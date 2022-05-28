@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:popdot/pages/listingSounds.dart';
+import 'package:popdot/widgets/liste_sons.dart';
 import 'database/firebase_options.dart';
 import 'database/firebase_tools.dart';
 import 'database/hive_tools.dart';
@@ -68,10 +69,10 @@ class MyApp extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => InfoScreen()),
+                      MaterialPageRoute(builder: (context) => AnimatedPage()),
                     );
                   },
-                  child: const Text('Page infoscreen'),
+                  child: const Text('Page test 404'),
                 );
               }),
             ),
