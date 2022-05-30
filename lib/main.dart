@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:popdot/pages/listingSounds.dart';
+import 'package:popdot/theme/appcolors.dart';
 import 'package:popdot/widgets/liste_sons.dart';
 import 'database/firebase_options.dart';
 import 'database/firebase_tools.dart';
@@ -33,10 +34,37 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  //static const String boitesons = 'sounds';
   static const String boitesons = 'sounds';
+
+
+
+  int selectedIndex = 0;
+
+  final widgetOptions = [
+    new Details(),
+    new AnimatedPage(),
+    new ClassTheme(),
+    new BibliTheme(),
+
+  ];
+
+
+
+
+  void onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,6 +180,38 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor:  AppColors.white,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.audiotrack,
+                  color: AppColors.beige,
+                ),
+                label: "Details theme"),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.library_books_rounded,
+                  color: AppColors.beige,
+                ),
+                label: "Sons"),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.volume_up,
+                  color: AppColors.beige,
+                ),
+                label: "Test"),
+          ],
+          currentIndex: selectedIndex,
+          fixedColor: AppColors.darkGrey,
+          onTap: onItemTapped,
+          selectedLabelStyle: TextStyle(color: Colors.red, fontSize: 20),
+          unselectedFontSize: 16,
+          selectedIconTheme:
+              IconThemeData(color: AppColors.darkGrey, opacity: 1.0, size: 30.0),
+          unselectedItemColor: Colors.black,
+          unselectedLabelStyle: TextStyle(fontSize: 18, color: Colors.pink),
         ),
       ),
     );

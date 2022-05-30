@@ -91,7 +91,7 @@ class _AnimatedPageState extends State<AnimatedPage>
                   height: _height / 50,
                 ),
                 Text(
-                  '404',
+                  'Désolé',
                   style: TextStyle(
                     fontSize: _height / 7,
                     fontWeight: FontWeight.bold,
@@ -99,7 +99,7 @@ class _AnimatedPageState extends State<AnimatedPage>
                   ),
                 ),
                 Text(
-                  'oops... nothing \nto see here',
+                  'La liste \nest vide',
                   style: TextStyle(
                     fontSize: _height / 28,
                     fontWeight: FontWeight.bold,

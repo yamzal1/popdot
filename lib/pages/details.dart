@@ -129,7 +129,7 @@ class _DetailsState extends State<Details> {
                                             //TODO RENVOYER VERS FORMULAIRE MODIFICATION
                                             onPressed: () => _deleteInfo(index),
                                             icon: Icon(
-                                              Icons.edit,
+                                              Icons.volume_up,
                                               color: Colors.blue,
                                             ),
                                           ),
