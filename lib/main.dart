@@ -10,6 +10,7 @@ import 'database/hive_tools.dart';
 import 'package:popdot/pages/biblitheme.dart';
 import 'package:popdot/pages/details.dart';
 import 'pages/theme.dart';
+import 'pages/FormuSons.dart';
 
 void main() async {
   // Firebase
@@ -35,7 +36,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  //static const String boitesons = 'sounds';
+  static const String boitesons = 'sounds';
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +86,17 @@ class MyApp extends StatelessWidget {
                   );
                 },
                 child: const Text('Page Louis'),
+              );
+            }),
+            Builder(builder: (context) {
+              return ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyCustomForm()),
+                  );
+                },
+                child: const Text('Formule sons test'),
               );
             }),
             Padding(
