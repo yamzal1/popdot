@@ -59,14 +59,14 @@ class _AnimatedPageState extends State<AnimatedPage>
       body: Stack(
         children: [
           Positioned(
-            bottom: _height / 2.78,
-            right: _height / -2.12,
+            bottom: _height / 45, //Position y du faisceau (Plus grande valeur = plus bas)
+            right: _height / -1.4, //Position x du faisceau (plus bas = plus a gauche)
             child: AnimatedBuilder(
                 animation: _controller,
                 child: Image.asset(
                   'images/light.png',
                   width: _height * 1.5,
-                  height: _height * 1.5,
+                  height: _height * 1.1, //Hauteur du faisceau
                 ),
                 builder: (BuildContext context, _widget) {
                   return Transform.rotate(
@@ -81,7 +81,8 @@ class _AnimatedPageState extends State<AnimatedPage>
             right: _height / 80,
             child: Image.asset(
               'images/illustration.png',
-              width: _height / 3,
+              // 'images/lamp.png',
+              width: _height / 8,//Taille du bonhomme
             ),
           ),
           Center(
@@ -93,7 +94,7 @@ class _AnimatedPageState extends State<AnimatedPage>
                 Text(
                   'Oups',
                   style: TextStyle(
-                    fontSize: _height / 7,
+                    fontSize: _height / 15,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor,
                   ),

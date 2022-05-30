@@ -80,9 +80,30 @@ class _DetailsState extends State<Details> {
                   valueListenable: soundBox.listenable(),
                   builder: (context, Box box, widget) {
                     if (box.isEmpty) {
-                      return Center(
-                        child: Text('Le thème ne contient aucun son'),
+
+
+
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.35,
+                        width: MediaQuery.of(context).size.width * 0.75,
+                        child: Card(
+                          child: AnimatedPage(),
+                        ),
                       );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     } else {
                       return SizedBox(
                         width: 600,
