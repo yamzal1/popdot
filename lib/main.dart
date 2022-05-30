@@ -95,7 +95,7 @@ class _MyAppState extends State<MyApp> {
               elevation: 4.0,
               icon: const Icon(Icons.add),
               label: Text(fabString),
-              onPressed: () {
+              onPressed: () async {
                 if(_selectedIndex == 0) { //Page 1
                   Navigator.push(
                     context,
@@ -103,10 +103,20 @@ class _MyAppState extends State<MyApp> {
                   );
                 }
                 if(_selectedIndex == 1) { //Page 2
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyApp()),//TODO Envoyer vers formulaire ajouter son
-                  );
+
+
+                    var picked = await FilePicker.platform.pickFiles();
+
+                    if (picked != null) {
+                      final fileBytes = picked.files.first.bytes;
+                      final fileName = picked.files.first.name;
+                      if (fileName.toString().endsWith(".mp3") ||
+                          fileName.toString().endsWith(".m4a")) {
+                        addSound(fileName, fileBytes);
+                      }
+                    }
+                  //TODO On ajoute le son direct, il faut d'abord aller sur un formulaire (pour choisir une icone)
+                  //https://pub.dev/packages/flutter_iconpicker
                 }
               },
             );
