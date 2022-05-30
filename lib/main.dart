@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:popdot/pages/home.dart';
 import 'package:popdot/pages/listingSounds.dart';
 import 'package:popdot/theme/appcolors.dart';
 import 'package:popdot/widgets/liste_sons.dart';
@@ -47,9 +48,10 @@ class _MyAppState extends State<MyApp> {
 
 
 
-  int selectedIndex = 0;
+  int _selectedIndex = 0;
 
-  final widgetOptions = [
+  final _pageOptions  = [
+    new HomePage(),
     new Details(),
     new AnimatedPage(),
     new ClassTheme(),
@@ -60,9 +62,9 @@ class _MyAppState extends State<MyApp> {
 
 
 
-  void onItemTapped(int index) {
+  void _onItemTapped(int index) {
     setState(() {
-      selectedIndex = index;
+      _selectedIndex = index;
     });
   }
 
@@ -71,147 +73,40 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: null,
-        backgroundColor: const Color(0xffe4e5e7),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Image.asset('images/logo.png'),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Builder(builder: (context) {
-                return ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Details()),
-                    );
-                  },
-                  child: const Text('Page des details'),
+        backgroundColor: Colors.black,
+        body: _pageOptions[_selectedIndex],
+        floatingActionButton: Builder(
+          builder: (context) {
+            return FloatingActionButton.extended(
+              elevation: 4.0,
+              icon: const Icon(Icons.add),
+              label: const Text('Ajouter un thème'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyCustomForm()),
                 );
-              }),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Builder(builder: (context) {
-                return ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AnimatedPage()),
-                    );
-                  },
-                  child: const Text('Page test 404'),
-                );
-              }),
-            ),
-            Builder(builder: (context) {
-              return ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ClassTheme()),
-                  );
-                },
-                child: const Text('Page Louis'),
-              );
-            }),
-            Builder(builder: (context) {
-              return ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyCustomForm()),
-                  );
-                },
-                child: const Text('Formule sons test'),
-              );
-            }),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Builder(builder: (context) {
-                return ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => BibliTheme()),
-                    );
-                  },
-                  child: const Text('Page Alex'),
-                );
-              }),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 16.0, top: 64.0),
-              child: Text(
-                'Thèmes',
-                style: TextStyle(fontSize: 35),
-              ),
-            ),
-            Flexible(
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: 160.0,
-                      height: 160.0,
-                      child: Card(
-                        child: OutlinedButton(
-                          child: Text('UPLOAD FILE'),
-                          onPressed: () async {
-                            var picked = await FilePicker.platform.pickFiles();
-
-                            if (picked != null) {
-                              final fileBytes = picked.files.first.bytes;
-                              final fileName = picked.files.first.name;
-                              if (fileName.toString().endsWith(".mp3") ||
-                                  fileName.toString().endsWith(".m4a")) {
-                                addSound(fileName, fileBytes);
-                              }
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+              },
+            );
+          }
         ),
+        floatingActionButtonLocation:
+        FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor:  AppColors.white,
-          items: <BottomNavigationBarItem>[
+          items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.audiotrack,
-                  color: AppColors.beige,
-                ),
-                label: "Details theme"),
+              icon: Icon(Icons.home,color: AppColors.darkGrey,),
+              label: 'Accueil',
+            ),
             BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.library_books_rounded,
-                  color: AppColors.beige,
-                ),
-                label: "Sons"),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.volume_up,
-                  color: AppColors.beige,
-                ),
-                label: "Test"),
+              icon: Icon(Icons.question_mark,color: AppColors.darkGrey,),
+              label: 'Autre page ?',
+            ),
+
           ],
-          currentIndex: selectedIndex,
-          fixedColor: AppColors.darkGrey,
-          onTap: onItemTapped,
-          selectedLabelStyle: TextStyle(color: Colors.red, fontSize: 20),
-          unselectedFontSize: 16,
-          selectedIconTheme:
-              IconThemeData(color: AppColors.darkGrey, opacity: 1.0, size: 30.0),
-          unselectedItemColor: Colors.black,
-          unselectedLabelStyle: TextStyle(fontSize: 18, color: Colors.pink),
+          currentIndex: _selectedIndex,
+          selectedItemColor: AppColors.darkGrey,
+          onTap: _onItemTapped,
         ),
       ),
     );

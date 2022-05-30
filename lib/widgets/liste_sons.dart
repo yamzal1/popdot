@@ -91,7 +91,7 @@ class _AnimatedPageState extends State<AnimatedPage>
                   height: _height / 50,
                 ),
                 Text(
-                  'Désolé',
+                  'Oups',
                   style: TextStyle(
                     fontSize: _height / 7,
                     fontWeight: FontWeight.bold,
@@ -99,7 +99,7 @@ class _AnimatedPageState extends State<AnimatedPage>
                   ),
                 ),
                 Text(
-                  'La liste \nest vide',
+                  'Ce thème \nest vide !',
                   style: TextStyle(
                     fontSize: _height / 28,
                     fontWeight: FontWeight.bold,
