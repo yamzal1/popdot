@@ -68,81 +68,81 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(fontSize: 35),
               ),
             ),
-            Flexible(
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: 160.0,
-                      height: 160.0,
-                      child: Card(
-                        child: OutlinedButton(
-                          child: Text('UPLOAD FILE'),
-                          onPressed: () async {
-                            var picked = await FilePicker.platform.pickFiles();
+            SizedBox(
+              height: 300,
+              child: Flexible(
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: 300.0,
+                        child: Card(
+                          child: OutlinedButton(
+                            child: Text('UPLOAD FILE'),
+                            onPressed: () async {
+                              var picked = await FilePicker.platform.pickFiles();
 
-                            if (picked != null) {
-                              final fileBytes = picked.files.first.bytes;
-                              final fileName = picked.files.first.name;
-                              if (fileName.toString().endsWith(".mp3") ||
-                                  fileName.toString().endsWith(".m4a")) {
-                                addSound(fileName, fileBytes);
+                              if (picked != null) {
+                                final fileBytes = picked.files.first.bytes;
+                                final fileName = picked.files.first.name;
+                                if (fileName.toString().endsWith(".mp3") ||
+                                    fileName.toString().endsWith(".m4a")) {
+                                  addSound(fileName, fileBytes);
+                                }
                               }
-                            }
-                          },
+                            },
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: 160.0,
-                      height: 160.0,
-                      child: Card(
-                        child: OutlinedButton(
-                          child: Text('Charger une image'),
-                          onPressed: () async {
-                            var picked = await FilePicker.platform.pickFiles();
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: 300.0,
+                        child: Card(
+                          child: OutlinedButton(
+                            child: Text('Charger une image'),
+                            onPressed: () async {
+                              var picked = await FilePicker.platform.pickFiles();
 
-                            if (picked != null) {
-                              final fileBytes = picked.files.first.bytes;
-                              final fileName = picked.files.first.name;
-                              if (fileName.toString().endsWith(".jpg") ||
-                                  fileName.toString().endsWith(".png")) {
-                                addImage(fileName, fileBytes);
+                              if (picked != null) {
+                                final fileBytes = picked.files.first.bytes;
+                                final fileName = picked.files.first.name;
+                                if (fileName.toString().endsWith(".jpg") ||
+                                    fileName.toString().endsWith(".png")) {
+                                  addImage(fileName, fileBytes);
+                                }
                               }
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: 300.0,
+                        child: Card(
+                          child: Builder(
+                            builder: (context) {
+                              return OutlinedButton(
+                                child: Text('+'),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => MyCustomForm()),
+                                    );
+                                  },
+                              );
                             }
-                          },
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: 160.0,
-                      height: 160.0,
-                      child: Card(
-                        child: Builder(
-                          builder: (context) {
-                            return OutlinedButton(
-                              child: Text('+'),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => MyCustomForm()),
-                                  );
-                                },
-                            );
-                          }
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

@@ -45,6 +45,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   //static const String boitesons = 'sounds';
   static const String boitesons = 'sounds';
+  String fabString = "Ajouter un thème";
 
 
 
@@ -65,6 +66,14 @@ class _MyAppState extends State<MyApp> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+
+      if(_selectedIndex==0){
+        fabString = "Ajouter un thème";
+      }
+      else if(_selectedIndex==1){
+        fabString = "Ajouter un son";
+      }
+
     });
   }
 
@@ -75,21 +84,37 @@ class _MyAppState extends State<MyApp> {
         appBar: null,
         backgroundColor: Colors.black,
         body: _pageOptions[_selectedIndex],
-        floatingActionButton: Builder(
+        floatingActionButton:
+
+
+
+        Builder(
           builder: (context) {
             return FloatingActionButton.extended(
+
               elevation: 4.0,
               icon: const Icon(Icons.add),
-              label: const Text('Ajouter un thème'),
+              label: Text(fabString),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyCustomForm()),
-                );
+                if(_selectedIndex == 0) { //Page 1
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyCustomForm()),
+                  );
+                }
+                if(_selectedIndex == 1) { //Page 2
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyApp()),//TODO Envoyer vers formulaire ajouter son
+                  );
+                }
               },
             );
           }
         ),
+
+
+
         floatingActionButtonLocation:
         FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomNavigationBar(
