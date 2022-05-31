@@ -129,6 +129,36 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 onChanged: (value) => updateRadio(value!),
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(onPressed: () {}, icon: const Icon(Icons.favorite_outlined)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.schedule_outlined)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.flight_outlined)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.lightbulb)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.pets_outlined))
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(onPressed: () {}, icon: const Icon(Icons.grade_outlined)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.euro_symbol_outlined)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.rocket_launch_outlined)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.nightlight_round_outlined)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.sports_esports_outlined))
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(onPressed: () {}, icon: const Icon(Icons.military_tech_outlined)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.science_outlined)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.history_edu_outlined)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.sports_basketball_outlined)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.piano_outlined))
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
