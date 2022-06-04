@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-class BibliTheme extends StatelessWidget {
-  Icon test = Icon(Icons.flight_outlined);
+class ThemeLibrary extends StatelessWidget {
+  const ThemeLibrary({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     const title = 'Bibliothèque thèmes lksqjzql';
@@ -17,14 +18,17 @@ class BibliTheme extends StatelessWidget {
           // horizontal, this produces 2 rows.
           crossAxisCount: 5,
           // Generate 100 widgets that display their index in the List.
-          children: List.generate(25, (index) {
-            return Center(
-              child: Text(
-                'Item $index',
-                style: Theme.of(context).textTheme.headline5,
-              ),
-            );
-          }),
+          children: List.generate(
+            25,
+            (index) {
+              return Center(
+                child: Text(
+                  'Item $index',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

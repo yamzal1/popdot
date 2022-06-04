@@ -2,15 +2,15 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:popdot/pages/listingSounds.dart';
+import 'package:popdot/pages/info_screen.dart';
 import 'package:popdot/pages/theme.dart';
-import 'package:popdot/theme/appcolors.dart';
+import 'package:popdot/theme/app_colors.dart';
 import 'package:popdot/widgets/liste_sons.dart';
-import 'package:popdot/pages/biblitheme.dart';
+import 'package:popdot/pages/theme_library.dart';
 import 'package:popdot/pages/details.dart';
 
 import '../database/firebase_tools.dart';
-import 'FormuSons.dart';
+import 'sound_form.dart';
 
 
 
@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
     new Details(),
     new AnimatedPage(),
     new ClassTheme(),
-    new BibliTheme(),
+    new ThemeLibrary(),
 
   ];
 

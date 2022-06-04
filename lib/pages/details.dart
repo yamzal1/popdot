@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import '../database/hive_tools.dart';
-import '../theme/appcolors.dart';
-import 'package:popdot/main.dart';
+import '../theme/app_colors.dart';
 
 import '../widgets/liste_sons.dart';
 

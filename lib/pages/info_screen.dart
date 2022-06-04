@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:popdot/main.dart';
 import 'package:popdot/database/hive_tools.dart';
 
 class InfoScreen extends StatefulWidget {
+  const InfoScreen({Key? key}) : super(key: key);
+
   @override
   _InfoScreenState createState() => _InfoScreenState();
 }
@@ -12,40 +13,37 @@ class InfoScreen extends StatefulWidget {
 class _InfoScreenState extends State<InfoScreen> {
   late Box<Sound> soundBox;
 
-  // Delete info from people box
+  // Deletes line in sound box at given index
   _deleteInfo(int index) {
     soundBox.deleteAt(index);
     print('Item deleted from box at index: $index');
-  } //supprime la ligne dans la box dont l'id est visé
+  }
 
   @override
   void initState() {
     super.initState();
-    // Get reference to an already opened box
-    // soundBox = Hive.box(MyApp.boitesons);
+
     soundBox = Hive.box<Sound>('sounds');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-
       floatingActionButton: FloatingActionButton(
         //TODO ajout son ici
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => MyApp(),
+            builder: (context) => const Popdot(),
           ),
         ),
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
-
-      body: ValueListenableBuilder( //permet de construire la liste en récupérant les données de la box. Les lignes seront mises les unes à la suite des autres, par ordre croissant d'id
+      body: ValueListenableBuilder(
+        // permet de construire la liste en récupérant les données de la box. Les lignes seront mises les unes à la suite des autres, par ordre croissant d'id
         valueListenable: soundBox.listenable(),
         builder: (context, Box box, widget) {
           if (box.isEmpty) {
-            return Center(
+            return const Center(
               child: Text('Le thème ne contient aucun son'),
             );
           } else {
@@ -57,43 +55,37 @@ class _InfoScreenState extends State<InfoScreen> {
                 return InkWell(
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const MyApp(),
+                      builder: (context) => const Popdot(),
                     ),
                   ),
-                    child : ListTile(
-                      leading:Icon(
-                        //TODO mettre l'icone de la bd (besoin du formulaire d'ajout)
-                        Icons.directions_car_filled,
-                        color: Colors.black,
-                      ),
-                      title: Text(personData.name),
-                      trailing: Wrap(
-                        spacing: 12, // space between two icons
-                        children: <Widget>[
-
-                      IconButton(
-                        //TODO RENVOYER VERS LE FORMULAIRE DE LOUIS.T
+                  child: ListTile(
+                    leading: const Icon(
+                      //TODO mettre l'icone de la bd (besoin du formulaire d'ajout)
+                      Icons.directions_car_filled,
+                      color: Colors.black,
+                    ),
+                    title: Text(personData.name),
+                    trailing: Wrap(
+                      spacing: 12, // space between two icons
+                      children: <Widget>[
+                        IconButton(
+                          //TODO RENVOYER VERS LE FORMULAIRE DE LOUIS.T
                           onPressed: () => _deleteInfo(index),
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.edit,
                             color: Colors.blue,
                           ),
                         ),
-
-                      IconButton(
+                        IconButton(
                           onPressed: () => _deleteInfo(index),
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.delete,
                             color: Colors.red,
                           ),
                         ),
-
-                          // icon-1
-                        ],
-                      ),
-                    )
-
-
+                      ],
+                    ),
+                  ),
                 );
               },
             );

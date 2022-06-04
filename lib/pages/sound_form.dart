@@ -1,27 +1,20 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:popdot/pages/listingSounds.dart';
-import 'package:popdot/widgets/liste_sons.dart';
-import '../database/firebase_options.dart';
+import 'package:popdot/pages/info_screen.dart';
 import '../database/firebase_tools.dart';
 import '../database/hive_tools.dart';
-import 'package:popdot/pages/biblitheme.dart';
-import 'package:popdot/pages/details.dart';
-import 'theme.dart';
-import '../main.dart';
 
-
-void main() async{
+void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(SoundAdapter());
-  await Hive.openBox<Sound>(MyApp.boitesons);
-  runApp(const MyApp());}
+  await Hive.openBox<Sound>(MyApp.soundBoxName);
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  static const String boitesons = "sounds";
+  static const String soundBoxName = "sounds";
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +25,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-enum SingingCharacter { Cadre, NonCadre }
+enum SingingCharacter { cadre, nonCadre }
 
 // Define a custom Form widget.
 class MyCustomForm extends StatefulWidget {
@@ -49,13 +42,14 @@ class _MyCustomFormState extends State<MyCustomForm> {
   // of the TextField.
   final myController = TextEditingController();
   TextEditingController entreprise = TextEditingController();
-  SingingCharacter _character = SingingCharacter.Cadre;
+  SingingCharacter _character = SingingCharacter.cadre;
   late Box<Sound> soundBox;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    soundBox = Hive.box(MyApp.boitesons);
+    soundBox = Hive.box(MyApp.soundBoxName);
   }
 
   @override
@@ -71,15 +65,15 @@ class _MyCustomFormState extends State<MyCustomForm> {
     });
   }
 
-  void prepSound() async{
-    if (entreprise.text != "" ){
-        var name = entreprise.text;
-        var file = _character.name;
+  void prepSound() async {
+    if (entreprise.text != "") {
+      var name = entreprise.text;
+      var file = _character.name;
       //soundBox.add(sound);
       addSound(name, file);
       reset();
-      Navigator.of(context).push
-        (MaterialPageRoute(builder: (context) => InfoScreen()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => const InfoScreen()));
     }
   }
 
@@ -109,14 +103,16 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 // code when the user saves the form.
               },
               validator: (String? value) {
-                return (value == null) ? 'Ne laissez pas un champ vide svp.' : null;
+                return (value == null)
+                    ? 'Ne laissez pas un champ vide svp.'
+                    : null;
               },
             ),
-            Text('data'),
+            const Text('data'),
             ListTile(
               title: const Text('Cadre'),
               leading: Radio<SingingCharacter>(
-                value: SingingCharacter.Cadre,
+                value: SingingCharacter.cadre,
                 groupValue: _character,
                 onChanged: (value) => updateRadio(value!),
               ),
@@ -124,7 +120,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
             ListTile(
               title: const Text('Non-cadre'),
               leading: Radio<SingingCharacter>(
-                value: SingingCharacter.NonCadre,
+                value: SingingCharacter.nonCadre,
                 groupValue: _character,
                 onChanged: (value) => updateRadio(value!),
               ),
@@ -132,31 +128,54 @@ class _MyCustomFormState extends State<MyCustomForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                IconButton(onPressed: () {}, icon: const Icon(Icons.favorite_outlined)),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.schedule_outlined)),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.flight_outlined)),
+                IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.favorite_outlined)),
+                IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.schedule_outlined)),
+                IconButton(
+                    onPressed: () {}, icon: const Icon(Icons.flight_outlined)),
                 IconButton(onPressed: () {}, icon: const Icon(Icons.lightbulb)),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.pets_outlined))
+                IconButton(
+                    onPressed: () {}, icon: const Icon(Icons.pets_outlined))
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                IconButton(onPressed: () {}, icon: const Icon(Icons.grade_outlined)),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.euro_symbol_outlined)),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.rocket_launch_outlined)),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.nightlight_round_outlined)),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.sports_esports_outlined))
+                IconButton(
+                    onPressed: () {}, icon: const Icon(Icons.grade_outlined)),
+                IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.euro_symbol_outlined)),
+                IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.rocket_launch_outlined)),
+                IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.nightlight_round_outlined)),
+                IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.sports_esports_outlined))
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                IconButton(onPressed: () {}, icon: const Icon(Icons.military_tech_outlined)),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.science_outlined)),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.history_edu_outlined)),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.sports_basketball_outlined)),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.piano_outlined))
+                IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.military_tech_outlined)),
+                IconButton(
+                    onPressed: () {}, icon: const Icon(Icons.science_outlined)),
+                IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.history_edu_outlined)),
+                IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.sports_basketball_outlined)),
+                IconButton(
+                    onPressed: () {}, icon: const Icon(Icons.piano_outlined))
               ],
             ),
             Padding(
@@ -166,7 +185,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 height: 160.0,
                 child: Card(
                   child: OutlinedButton(
-                    child: Text('UPLOAD FILE'),
+                    child: const Text('UPLOAD FILE'),
                     onPressed: () async {
                       var picked = await FilePicker.platform.pickFiles();
 

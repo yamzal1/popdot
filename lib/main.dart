@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:popdot/pages/home.dart';
-import 'package:popdot/pages/listingSounds.dart';
-import 'package:popdot/theme/appcolors.dart';
+import 'package:popdot/theme/app_colors.dart';
 import 'package:popdot/widgets/liste_sons.dart';
 import 'database/firebase_options.dart';
 import 'database/firebase_tools.dart';
 import 'database/hive_tools.dart';
-import 'package:popdot/pages/biblitheme.dart';
+import 'package:popdot/pages/theme_library.dart';
 import 'package:popdot/pages/details.dart';
 import 'pages/theme.dart';
-import 'pages/FormuSons.dart';
+import 'pages/sound_form.dart';
 
 void main() async {
   // Firebase
@@ -26,54 +25,41 @@ void main() async {
   Hive.registerAdapter(ThemeAdapter());
   Hive.registerAdapter(SoundAdapter());
   Hive.registerAdapter(ImageAdapter());
-  // var sons = Hive.openBox<Sound>('sounds');
   await Hive.openBox<Sound>('sounds');
 
-  // print(sons.values.toList().cast<Sound>());
-  // print(sons.keys);
-  // print(sons.values);
-  runApp(const MyApp());
+  runApp(const Popdot());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Popdot extends StatefulWidget {
+  const Popdot({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<Popdot> createState() => _PopdotState();
 }
 
-class _MyAppState extends State<MyApp> {
-  //static const String boitesons = 'sounds';
-  static const String boitesons = 'sounds';
+class _PopdotState extends State<Popdot> {
+  static const String soundBoxName = 'sounds';
   String fabString = "Ajouter un thème";
-
-
 
   int _selectedIndex = 0;
 
-  final _pageOptions  = [
-    new HomePage(),
-    new Details(),
-    new AnimatedPage(),
-    new ClassTheme(),
-    new BibliTheme(),
-
+  final _pageOptions = [
+    const HomePage(),
+    const Details(),
+    AnimatedPage(),
+    ClassTheme(),
+    ThemeLibrary(),
   ];
-
-
-
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
 
-      if(_selectedIndex==0){
+      if (_selectedIndex == 0) {
         fabString = "Ajouter un thème";
-      }
-      else if(_selectedIndex==1){
+      } else if (_selectedIndex == 1) {
         fabString = "Ajouter un son";
       }
-
     });
   }
 
@@ -84,61 +70,57 @@ class _MyAppState extends State<MyApp> {
         appBar: null,
         backgroundColor: Colors.black,
         body: _pageOptions[_selectedIndex],
-        floatingActionButton:
-
-
-
-        Builder(
+        floatingActionButton: Builder(
           builder: (context) {
-
             return FloatingActionButton.extended(
-
               elevation: 4.0,
               icon: const Icon(Icons.add),
               label: Text(fabString),
               onPressed: () async {
-                if(_selectedIndex == 0) { //Page 1
+                if (_selectedIndex == 0) {
+                  // Page 1
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => MyCustomForm()),
                   );
                 }
-                if(_selectedIndex == 1) { //Page 2
+                if (_selectedIndex == 1) {
+                  // Page 2
 
+                  var picked = await FilePicker.platform.pickFiles();
 
-                    var picked = await FilePicker.platform.pickFiles();
-
-                    if (picked != null) {
-                      final fileBytes = picked.files.first.bytes;
-                      final fileName = picked.files.first.name;
-                      if (fileName.toString().endsWith(".mp3") ||
-                          fileName.toString().endsWith(".m4a")) {
-                        addSound(fileName, fileBytes);
-                      }
+                  if (picked != null) {
+                    final fileBytes = picked.files.first.bytes;
+                    final fileName = picked.files.first.name;
+                    if (fileName.toString().endsWith(".mp3") ||
+                        fileName.toString().endsWith(".m4a")) {
+                      addSound(fileName, fileBytes);
                     }
-                  //TODO On ajoute le son direct, il faut d'abord aller sur un formulaire (pour choisir une icone)
-                  //https://pub.dev/packages/flutter_iconpicker
+                  }
+                  // TODO : On ajoute le son direct, il faut d'abord aller sur un formulaire (pour choisir une icone)
+                  // https://pub.dev/packages/flutter_iconpicker
                 }
               },
             );
-          }
+          },
         ),
-
-
-
-        floatingActionButtonLocation:
-        FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home,color: AppColors.darkGrey,),
+              icon: Icon(
+                Icons.home,
+                color: AppColors.darkGrey,
+              ),
               label: 'Accueil',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.question_mark,color: AppColors.darkGrey,),
+              icon: Icon(
+                Icons.question_mark,
+                color: AppColors.darkGrey,
+              ),
               label: 'Autre page ?',
             ),
-
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: AppColors.darkGrey,
