@@ -2,16 +2,16 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:popdot/pages/home.dart';
-import 'package:popdot/theme/app_colors.dart';
-import 'package:popdot/widgets/sound_list.dart';
 import 'database/firebase_options.dart';
 import 'database/firebase_tools.dart';
 import 'database/hive_tools.dart';
-import 'package:popdot/pages/theme_library.dart';
-import 'package:popdot/pages/details.dart';
+import 'pages/theme_library.dart';
+import 'pages/details.dart';
 import 'pages/theme.dart';
 import 'pages/sound_form.dart';
+import 'pages/home.dart';
+import 'theme/app_colors.dart';
+import 'widgets/sound_list.dart';
 
 void main() async {
   // Firebase
@@ -38,6 +38,11 @@ class Popdot extends StatefulWidget {
 }
 
 class _PopdotState extends State<Popdot> {
+  bool useMaterial3 = true;
+  bool useLightMode = true;
+
+  late ThemeData themeData;
+
   static const String soundBoxName = 'sounds';
   String fabString = "Ajouter un thème";
 
@@ -47,8 +52,8 @@ class _PopdotState extends State<Popdot> {
     const HomePage(),
     const Details(),
     const ThemeLibrary(),
-    AnimatedPage(),
-    ClassTheme(),
+    const AnimatedPage(),
+    const ClassTheme(),
   ];
 
   void _onItemTapped(int index) {
@@ -64,8 +69,21 @@ class _PopdotState extends State<Popdot> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    themeData = updateThemes(useMaterial3, useLightMode);
+  }
+
+  ThemeData updateThemes(bool useMaterial3, bool useLightMode) {
+    return ThemeData(
+        useMaterial3: useMaterial3,
+        brightness: useLightMode ? Brightness.light : Brightness.dark);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: themeData,
       home: Scaffold(
         appBar: null,
         backgroundColor: Colors.black,
