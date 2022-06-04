@@ -127,6 +127,17 @@ class _PopdotState extends State<Popdot> {
                       );
                       addSound(fileName, fileBytes);
                     }
+                    else {
+                      Fluttertoast.showToast(
+                          msg: "Echec",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 3,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+                    }
                   }
                   // TODO : On ajoute le son direct, il faut d'abord aller sur un formulaire (pour choisir une icone)
                   // https://pub.dev/packages/flutter_iconpicker
