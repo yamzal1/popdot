@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'database/firebase_options.dart';
@@ -12,6 +13,7 @@ import 'pages/sound_form.dart';
 import 'pages/home.dart';
 import 'theme/app_colors.dart';
 import 'widgets/sound_list.dart';
+
 
 void main() async {
   // Firebase
@@ -114,6 +116,15 @@ class _PopdotState extends State<Popdot> {
                     final fileName = picked.files.first.name;
                     if (fileName.toString().endsWith(".mp3") ||
                         fileName.toString().endsWith(".m4a")) {
+                      Fluttertoast.showToast(
+                          msg: "Son ajouté avec succès",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 3,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
                       addSound(fileName, fileBytes);
                     }
                   }

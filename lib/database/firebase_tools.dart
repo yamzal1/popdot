@@ -14,7 +14,6 @@ Future<void> createTheme(title, description, image) async {
 Future<void> addSound(name, file) async {
   var box = await Hive.openBox<Sound>('sounds');
   box.add(Sound(name: name, icon: "plane or smth"));
-
   uploadFile(name, 'sounds', file);
 }
 

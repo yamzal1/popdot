@@ -30,6 +30,9 @@ dependencies:
   path_provider: ^2.0.9
   hive_flutter: ^1.1.0
 
+  #FlutterToast
+  fluttertoast: ^8.0.9
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
