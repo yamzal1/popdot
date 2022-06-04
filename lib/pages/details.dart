@@ -49,8 +49,7 @@ class _DetailsState extends State<Details> {
                   child: Padding(
                     padding: const EdgeInsets.all(2.0),
                     child: SizedBox(
-                        width: 400,
-                        height: 400,
+                        height: MediaQuery.of(context).size.height * 0.30,
                         child: Image.asset('assets/images/img_cover_test.png')),
                   ),
                 ),

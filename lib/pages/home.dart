@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 
@@ -16,9 +17,11 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: AppColors.white,
-          title: SizedBox(
-            height: 80,
-            child: Image.asset('assets/images/logo.png'),
+          title: Center(
+            child: SizedBox(
+              height: 80,
+              child: Image.asset('assets/images/logo.png'),
+            ),
           ),
           toolbarHeight: 80,
         ),
@@ -78,10 +81,13 @@ class _HomePageState extends State<HomePage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
+
         child: Stack(
           children: [
+
             Ink.image(
-              image: Image.asset('assets/images/' + backgroundImage).image,
+
+              image: Image.asset('images/' + backgroundImage).image,
               colorFilter:
                   const ColorFilter.mode(AppColors.darkMole, BlendMode.color),
               fit: BoxFit.cover,
