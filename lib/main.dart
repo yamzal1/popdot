@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:popdot/pages/home.dart';
 import 'package:popdot/theme/app_colors.dart';
-import 'package:popdot/widgets/liste_sons.dart';
+import 'package:popdot/widgets/sound_list.dart';
 import 'database/firebase_options.dart';
 import 'database/firebase_tools.dart';
 import 'database/hive_tools.dart';
@@ -46,9 +46,9 @@ class _PopdotState extends State<Popdot> {
   final _pageOptions = [
     const HomePage(),
     const Details(),
+    const ThemeLibrary(),
     AnimatedPage(),
     ClassTheme(),
-    ThemeLibrary(),
   ];
 
   void _onItemTapped(int index) {
@@ -81,7 +81,9 @@ class _PopdotState extends State<Popdot> {
                   // Page 1
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MyCustomForm()),
+                    MaterialPageRoute(
+                      builder: (context) => const MyCustomForm(),
+                    ),
                   );
                 }
                 if (_selectedIndex == 1) {

@@ -30,6 +30,4 @@ Future<void> uploadFile(name, folder, file) async {
   storage.ref('$folder/$name').putData(file);
 }
 
-Future<void> downloadFile(name, folder) async {
-
-}
+Future<void> downloadFile(name, folder) async {}

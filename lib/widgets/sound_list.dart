@@ -1,24 +1,25 @@
-
 import 'package:flutter/material.dart';
 
-
-
 class Animated extends StatelessWidget {
+  const Animated({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '404',
       theme: ThemeData(
-        primaryColor: Color(0xFF323232),
+        primaryColor: const Color(0xFF323232),
         fontFamily: 'Poppins',
       ),
-      home: AnimatedPage(),
+      home: const AnimatedPage(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class AnimatedPage extends StatefulWidget {
+  const AnimatedPage({Key? key}) : super(key: key);
+
   @override
   _AnimatedPageState createState() => _AnimatedPageState();
 }
@@ -30,16 +31,16 @@ class _AnimatedPageState extends State<AnimatedPage>
   @override
   void initState() {
     _controller = AnimationController(
-      duration: Duration(seconds: 2),
-      reverseDuration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
+      reverseDuration: const Duration(seconds: 2),
       vsync: this,
     )..addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _controller.reverse();
-      } else if (status == AnimationStatus.dismissed) {
-        _controller.forward();
-      }
-    });
+        if (status == AnimationStatus.completed) {
+          _controller.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          _controller.forward();
+        }
+      });
     _controller.forward();
     super.initState();
   }
@@ -59,8 +60,10 @@ class _AnimatedPageState extends State<AnimatedPage>
       body: Stack(
         children: [
           Positioned(
-            bottom: _height / 45, //Position y du faisceau (Plus grande valeur = plus bas)
-            right: _height / -1.4, //Position x du faisceau (plus bas = plus a gauche)
+            bottom: _height / 45,
+            //Position y du faisceau (Plus grande valeur = plus bas)
+            right: _height / -1.4,
+            //Position x du faisceau (plus bas = plus a gauche)
             child: AnimatedBuilder(
                 animation: _controller,
                 child: Image.asset(
@@ -82,7 +85,7 @@ class _AnimatedPageState extends State<AnimatedPage>
             child: Image.asset(
               'images/illustration.png',
               // 'images/lamp.png',
-              width: _height / 8,//Taille du bonhomme
+              width: _height / 8, //Taille du bonhomme
             ),
           ),
           Center(
@@ -116,4 +119,3 @@ class _AnimatedPageState extends State<AnimatedPage>
     );
   }
 }
-

@@ -1,18 +1,12 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:popdot/pages/info_screen.dart';
 import 'package:popdot/pages/theme.dart';
-import 'package:popdot/theme/app_colors.dart';
-import 'package:popdot/widgets/liste_sons.dart';
 import 'package:popdot/pages/theme_library.dart';
 import 'package:popdot/pages/details.dart';
 
 import '../database/firebase_tools.dart';
+import '../widgets/sound_list';
 import 'sound_form.dart';
-
-
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,24 +16,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  //static const String boitesons = 'sounds';
-  static const String boitesons = 'sounds';
-
-
+  static const String soundBoxName = 'sounds';
 
   int _selectedIndex = 0;
 
-  final _pageOptions  = [
-    new HomePage(),
-    new Details(),
-    new AnimatedPage(),
-    new ClassTheme(),
-    new ThemeLibrary(),
-
+  final _pageOptions = [
+    const HomePage(),
+    const Details(),
+    const ThemeLibrary(),
+    AnimatedPage(),
+    ClassTheme(),
   ];
-
-
-
 
   void _onItemTapped(int index) {
     setState(() {
@@ -58,9 +45,6 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Image.asset('images/logo.png'),
-
-
-
             const Padding(
               padding: EdgeInsets.only(left: 16.0, top: 64.0),
               child: Text(
@@ -80,9 +64,10 @@ class _HomePageState extends State<HomePage> {
                         width: 300.0,
                         child: Card(
                           child: OutlinedButton(
-                            child: Text('UPLOAD FILE'),
+                            child: const Text('UPLOAD FILE'),
                             onPressed: () async {
-                              var picked = await FilePicker.platform.pickFiles();
+                              var picked =
+                                  await FilePicker.platform.pickFiles();
 
                               if (picked != null) {
                                 final fileBytes = picked.files.first.bytes;
@@ -103,9 +88,10 @@ class _HomePageState extends State<HomePage> {
                         width: 300.0,
                         child: Card(
                           child: OutlinedButton(
-                            child: Text('Charger une image'),
+                            child: const Text('Charger une image'),
                             onPressed: () async {
-                              var picked = await FilePicker.platform.pickFiles();
+                              var picked =
+                                  await FilePicker.platform.pickFiles();
 
                               if (picked != null) {
                                 final fileBytes = picked.files.first.bytes;
@@ -125,19 +111,18 @@ class _HomePageState extends State<HomePage> {
                       child: SizedBox(
                         width: 300.0,
                         child: Card(
-                          child: Builder(
-                            builder: (context) {
-                              return OutlinedButton(
-                                child: Text('+'),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => MyCustomForm()),
-                                    );
-                                  },
-                              );
-                            }
-                          ),
+                          child: Builder(builder: (context) {
+                            return OutlinedButton(
+                              child: const Text('+'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const MyCustomForm()),
+                                );
+                              },
+                            );
+                          }),
                         ),
                       ),
                     ),

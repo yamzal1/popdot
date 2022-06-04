@@ -4,7 +4,7 @@ import 'package:hive_flutter/adapters.dart';
 import '../database/hive_tools.dart';
 import '../theme/app_colors.dart';
 
-import '../widgets/liste_sons.dart';
+import '../widgets/sound_list.dart';
 
 class Details extends StatefulWidget {
   const Details({Key? key}) : super(key: key);
