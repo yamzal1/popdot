@@ -1,8 +1,10 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_iconpicker/IconPicker/iconPicker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:popdot/pages/theme_form.dart';
 import 'database/firebase_options.dart';
 import 'database/firebase_tools.dart';
 import 'database/hive_tools.dart';
@@ -102,45 +104,19 @@ class _PopdotState extends State<Popdot> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const MyCustomForm(),
+                      builder: (context) => ThemeForm(),
                     ),
                   );
                 }
                 if (_selectedIndex == 1) {
                   // Page 2
 
-                  var picked = await FilePicker.platform.pickFiles();
-
-                  if (picked != null) {
-                    final fileBytes = picked.files.first.bytes;
-                    final fileName = picked.files.first.name;
-                    if (fileName.toString().endsWith(".mp3") ||
-                        fileName.toString().endsWith(".m4a")) {
-                      Fluttertoast.showToast(
-                          msg: "Son ajouté avec succès",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 3,
-                          backgroundColor: Colors.green,
-                          textColor: Colors.white,
-                          fontSize: 16.0
-                      );
-                      addSound(fileName, fileBytes);
-                    }
-                    else {
-                      Fluttertoast.showToast(
-                          msg: "Echec",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 3,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 16.0
-                      );
-                    }
-                  }
-                  // TODO : On ajoute le son direct, il faut d'abord aller sur un formulaire (pour choisir une icone)
-                  // https://pub.dev/packages/flutter_iconpicker
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SoundForm(),
+                    ),
+                  );
                 }
               },
             );

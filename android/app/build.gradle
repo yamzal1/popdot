@@ -38,7 +38,7 @@ android {
 
     defaultConfig {
         applicationId "com.poppop.popdot"
-        minSdkVersion localProperties.getProperty('flutter.minSdkVersion')
+        minSdkVersion 19
         targetSdkVersion localProperties.getProperty('flutter.targetSdkVersion')
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
