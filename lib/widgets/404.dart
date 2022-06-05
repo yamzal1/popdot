@@ -1,38 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:popdot/theme/app_colors.dart';
 
-class Animated extends StatelessWidget {
-  const Animated({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '404',
-      theme: ThemeData(
-        primaryColor: const Color(0xFF323232),
-        fontFamily: 'Poppins',
-      ),
-      home: const AnimatedPage(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
 
-class AnimatedPage extends StatefulWidget {
-  const AnimatedPage({Key? key}) : super(key: key);
+class NoSound extends StatefulWidget {
+  const NoSound({Key? key}) : super(key: key);
 
   @override
-  _AnimatedPageState createState() => _AnimatedPageState();
+  _NoSoundState createState() => _NoSoundState();
 }
 
-class _AnimatedPageState extends State<AnimatedPage>
+class _NoSoundState extends State<NoSound>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
   void initState() {
     _controller = AnimationController(
-      duration: const Duration(seconds: 2),
-      reverseDuration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 3),
+      reverseDuration: const Duration(seconds: 3),
       vsync: this,
     )..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
@@ -56,14 +42,15 @@ class _AnimatedPageState extends State<AnimatedPage>
     double _height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      //backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: AppColors.darkGrey,
       body: Stack(
         children: [
           Positioned(
-            bottom: _height / 45,
+            bottom: _height / 8,
             //Position y du faisceau (Plus grande valeur = plus bas)
-            right: _height / -1.4,
-            //Position x du faisceau (plus bas = plus a gauche)
+            right: _height / -1.55,
+            //Position x du faisceau (plus basse valeur = plus a droite)
             child: AnimatedBuilder(
                 animation: _controller,
                 child: Image.asset(
@@ -99,7 +86,8 @@ class _AnimatedPageState extends State<AnimatedPage>
                   style: TextStyle(
                     fontSize: _height / 15,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor,
+                    // color: Theme.of(context).primaryColor,
+                    color: AppColors.darkGrey,
                   ),
                 ),
                 Text(
@@ -107,7 +95,8 @@ class _AnimatedPageState extends State<AnimatedPage>
                   style: TextStyle(
                     fontSize: _height / 28,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor,
+                    // color: Theme.of(context).primaryColor,
+                    color: AppColors.darkGrey,
                   ),
                   textAlign: TextAlign.center,
                 )

@@ -5,7 +5,7 @@ import 'package:popdot/pages/theme_library.dart';
 import 'package:popdot/pages/details.dart';
 
 import '../database/firebase_tools.dart';
-import '../widgets/sound_list.dart';
+import '../widgets/404.dart';
 import 'sound_form.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     const Details(),
     const ThemeLibrary(),
     const ClassTheme(),
-    const AnimatedPage(),
+    const NoSound(),
   ];
 
   void _onItemTapped(int index) {

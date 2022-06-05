@@ -14,7 +14,7 @@ import 'pages/theme.dart';
 import 'pages/sound_form.dart';
 import 'pages/home.dart';
 import 'theme/app_colors.dart';
-import 'widgets/sound_list.dart';
+import 'widgets/404.dart';
 
 
 void main() async {
@@ -56,7 +56,7 @@ class _PopdotState extends State<Popdot> {
     const HomePage(),
     const Details(),
     const ThemeLibrary(),
-    const AnimatedPage(),
+    const NoSound(),
     const ClassTheme(),
   ];
 

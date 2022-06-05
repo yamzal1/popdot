@@ -4,7 +4,7 @@ import 'package:hive_flutter/adapters.dart';
 import '../database/hive_tools.dart';
 import '../theme/app_colors.dart';
 
-import '../widgets/sound_list.dart';
+import '../widgets/404.dart';
 
 class Details extends StatefulWidget {
   const Details({Key? key}) : super(key: key);
@@ -32,6 +32,8 @@ class _DetailsState extends State<Details> {
 
   @override
   Widget build(BuildContext context) {
+    double _height = MediaQuery.of(context).size.height;
+
     return MaterialApp(
       theme: ThemeData(
         scaffoldBackgroundColor: AppColors.white,
@@ -58,17 +60,15 @@ class _DetailsState extends State<Details> {
                   child: Text(
                     "Titre du thème",
                     style: TextStyle(
-                      fontSize: 40,
+                      fontSize: _height / 20,
+                      fontWeight: FontWeight.bold,
                       color: AppColors.darkGrey,
                     ),
                   ),
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: const Text("Liste des sons : "),
-            ),
+
             Column(
               children: [
                 const SizedBox(height: 24),
@@ -81,10 +81,10 @@ class _DetailsState extends State<Details> {
 
 
                       return SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.35,
+                        height: MediaQuery.of(context).size.height * 0.45,
                         width: MediaQuery.of(context).size.width * 0.75,
                         child: Card(
-                          child: AnimatedPage(),
+                          child: NoSound(),
                         ),
                       );
 
