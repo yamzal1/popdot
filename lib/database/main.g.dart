@@ -6,25 +6,26 @@ part of 'hive_tools.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ThemeAdapter extends TypeAdapter<Theme> {
+class JukeboxThemeAdapter extends TypeAdapter<JukeboxTheme> {
   @override
   final int typeId = 12;
 
   @override
-  Theme read(BinaryReader reader) {
+  JukeboxTheme read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Theme(
+    return JukeboxTheme(
       title: fields[0] as String,
       description: fields[1] as String,
       image: fields[2] as String,
-    )..sounds = fields[3] == null ? [] : (fields[3] as List).cast<Sound>();
+      sounds: fields[3] == null ? [] : (fields[3] as List).cast<Sound>(),
+    );
   }
 
   @override
-  void write(BinaryWriter writer, Theme obj) {
+  void write(BinaryWriter writer, JukeboxTheme obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -43,7 +44,7 @@ class ThemeAdapter extends TypeAdapter<Theme> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ThemeAdapter &&
+      other is JukeboxThemeAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -60,17 +61,20 @@ class SoundAdapter extends TypeAdapter<Sound> {
     };
     return Sound(
       name: fields[0] as String,
-      icon: fields[1] as String,
+      fullpath: fields[1] as String,
+      icon: fields[2] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Sound obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
+      ..write(obj.fullpath)
+      ..writeByte(2)
       ..write(obj.icon);
   }
 
@@ -85,23 +89,23 @@ class SoundAdapter extends TypeAdapter<Sound> {
           typeId == other.typeId;
 }
 
-class ImageAdapter extends TypeAdapter<ImageObject> {
+class JukeboxImageAdapter extends TypeAdapter<JukeboxImage> {
   @override
   final int typeId = 86;
 
   @override
-  ImageObject read(BinaryReader reader) {
+  JukeboxImage read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return ImageObject(
+    return JukeboxImage(
       name: fields[0] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, ImageObject obj) {
+  void write(BinaryWriter writer, JukeboxImage obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
@@ -114,7 +118,7 @@ class ImageAdapter extends TypeAdapter<ImageObject> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ImageAdapter &&
+      other is JukeboxImageAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

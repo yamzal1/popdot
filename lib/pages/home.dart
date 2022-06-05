@@ -1,7 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:popdot/database/firebase_tools.dart';
+import 'package:popdot/database/hive_tools.dart';
+
 import '../theme/app_colors.dart';
 import 'about.dart';
+import 'theme_sounds.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,6 +14,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    // makeABunchaThemes();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,18 +36,19 @@ class _HomePageState extends State<HomePage> {
           toolbarHeight: 80,
           actions: [
             IconButton(
-              icon: Icon(Icons.question_mark,
-              color: AppColors.beige,),
+              icon: const Icon(
+                Icons.question_mark,
+                color: AppColors.beige,
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => About(),
+                    builder: (context) => const About(),
                   ),
                 );
               },
             ),
-            // add more IconButton
           ],
         ),
         backgroundColor: AppColors.white,
@@ -47,9 +57,9 @@ class _HomePageState extends State<HomePage> {
           child: ListView(
             scrollDirection: Axis.vertical,
             children: [
-              buildThemeRow('Your themes', ['0.jpg', '1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg']),
-              buildThemeRow('Recent', ['6.jpg', '7.jpg', '8.jpg', '9.jpg', '10.jpg', '11.jpg']),
-              buildThemeRow('Made for you', ['12.jpg', '13.jpg', '14.jpg', '15.jpg', '16.jpg', '17.jpg']),
+              buildThemeRow('Your themes', getThemes(), false),
+              buildThemeRow('Recent', getThemes(), false),
+              buildThemeRow('Made for you', getMadeForYouThemes(), true),
             ],
           ),
         ),
@@ -57,7 +67,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Column buildThemeRow(title, images) {
+  Column buildThemeRow(title, method, isBaseTheme) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -71,25 +81,76 @@ class _HomePageState extends State<HomePage> {
         SizedBox(
           width: double.infinity,
           height: 150,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              buildThemeCard('Spain', images[0]),
-              buildThemeCard('France', images[1]),
-              buildThemeCard('Go to heck purple', images[2]),
-              buildThemeCard('Spain', images[3]),
-              buildThemeCard('France', images[4]),
-              buildThemeCard('Go to heck purple', images[5]),
-            ],
+          child: FutureBuilder<List>(
+            initialData: const [],
+            future: method,
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: snapshot.data?.length,
+                  itemBuilder: (context, index) {
+                    if (snapshot.data != null) {
+                      JukeboxTheme theme =
+                          (snapshot.data?[index] as JukeboxTheme);
+
+                      return buildThemeCard(
+                          theme.title, theme.image, isBaseTheme);
+                    } else {
+                      return const Align(
+                        alignment: Alignment.center,
+                        child: Text('oops'),
+                      );
+                    }
+                  },
+                );
+              } else {
+                return ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(left: 8.0),
+                      width: 150,
+                      height: 150,
+                      child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: Material(
+                                child: InkWell(
+                                  onTap: () {
+                                    print('');
+                                  },
+                                ),
+                              ),
+                            ),
+                            const Align(
+                              child: Icon(
+                                Icons.add,
+                                size: 50.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }
+            },
           ),
         ),
       ],
     );
   }
 
-  Container buildThemeCard(title, backgroundImage) {
+  Container buildThemeCard(title, backgroundImage, isBaseTheme) {
     return Container(
-      margin: EdgeInsets.only(left: 8.0),
+      margin: const EdgeInsets.only(left: 8.0),
       width: 150,
       height: 150,
       child: Card(
@@ -97,18 +158,25 @@ class _HomePageState extends State<HomePage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-
         child: Stack(
           children: [
-
             Ink.image(
-
-              image: Image.asset('images/' + backgroundImage).image,
+              image: Image.asset('assets/images/' + backgroundImage).image,
               colorFilter:
                   const ColorFilter.mode(AppColors.darkMole, BlendMode.color),
               fit: BoxFit.cover,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Details(
+                        title: title,
+                        isBaseTheme: isBaseTheme,
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
             Container(
@@ -125,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                         fontSize: 20,
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

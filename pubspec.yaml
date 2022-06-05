@@ -44,6 +44,9 @@ dev_dependencies:
 
   flutter_lints: ^1.0.0
 
+  # Audio Player
+  just_audio: ^0.9.20
+
 flutter:
   assets:
     - assets/images/

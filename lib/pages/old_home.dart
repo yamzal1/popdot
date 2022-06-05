@@ -2,7 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:popdot/pages/theme.dart';
 import 'package:popdot/pages/theme_library.dart';
-import 'package:popdot/pages/details.dart';
+import 'package:popdot/pages/theme_sounds.dart';
 
 import '../database/firebase_tools.dart';
 import '../widgets/404.dart';
@@ -22,7 +22,10 @@ class _HomePageState extends State<HomePage> {
 
   final _pageOptions = [
     const HomePage(),
-    const Details(),
+    const Details(
+      title: "",
+      isBaseTheme: false,
+    ),
     const ThemeLibrary(),
     const ClassTheme(),
     const NoSound(),
@@ -118,8 +121,7 @@ class _HomePageState extends State<HomePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SoundForm()),
+                                      builder: (context) => const SoundForm()),
                                 );
                               },
                             );

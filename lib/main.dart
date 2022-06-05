@@ -1,21 +1,19 @@
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_iconpicker/IconPicker/iconPicker.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:popdot/pages/theme_form.dart';
+
 import 'database/firebase_options.dart';
-import 'database/firebase_tools.dart';
 import 'database/hive_tools.dart';
-import 'pages/theme_library.dart';
-import 'pages/details.dart';
-import 'pages/theme.dart';
-import 'pages/sound_form.dart';
 import 'pages/home.dart';
+import 'pages/sound_form.dart';
+import 'pages/theme.dart';
+import 'pages/theme_library.dart';
+import 'pages/theme_sounds.dart';
 import 'theme/app_colors.dart';
 import 'widgets/404.dart';
-
 
 void main() async {
   // Firebase
@@ -26,10 +24,9 @@ void main() async {
 
   // Hive
   await Hive.initFlutter();
-  Hive.registerAdapter(ThemeAdapter());
+  Hive.registerAdapter(JukeboxThemeAdapter());
   Hive.registerAdapter(SoundAdapter());
-  Hive.registerAdapter(ImageAdapter());
-  await Hive.openBox<Sound>('sounds');
+  Hive.registerAdapter(JukeboxImageAdapter());
 
   runApp(const Popdot());
 }
@@ -54,7 +51,10 @@ class _PopdotState extends State<Popdot> {
 
   final _pageOptions = [
     const HomePage(),
-    const Details(),
+    const Details(
+      title: "",
+      isBaseTheme: false,
+    ),
     const ThemeLibrary(),
     const NoSound(),
     const ClassTheme(),
