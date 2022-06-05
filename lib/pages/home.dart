@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
+import 'about.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -24,6 +25,21 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           toolbarHeight: 80,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.question_mark,
+              color: AppColors.beige,),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => About(),
+                  ),
+                );
+              },
+            ),
+            // add more IconButton
+          ],
         ),
         backgroundColor: AppColors.white,
         body: SizedBox(
