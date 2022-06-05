@@ -82,7 +82,6 @@ class _HomePageState extends State<HomePage> {
           width: double.infinity,
           height: 150,
           child: FutureBuilder<List>(
-            initialData: const [],
             future: method,
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data!.isNotEmpty) {
@@ -105,41 +104,51 @@ class _HomePageState extends State<HomePage> {
                   },
                 );
               } else {
-                return ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(left: 8.0),
-                      width: 150,
-                      height: 150,
-                      child: Card(
-                        clipBehavior: Clip.antiAlias,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Stack(
-                          children: [
-                            Positioned.fill(
-                              child: Material(
-                                child: InkWell(
-                                  onTap: () {
-                                    print('');
-                                  },
+                if (title != 'Recent') {
+                  return ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(left: 8.0),
+                        width: 150,
+                        height: 150,
+                        child: Card(
+                          clipBehavior: Clip.antiAlias,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Stack(
+                            children: [
+                              Positioned.fill(
+                                child: Material(
+                                  child: InkWell(
+                                    onTap: () {
+                                      print('');
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
-                            const Align(
-                              child: Icon(
-                                Icons.add,
-                                size: 50.0,
+                              const Align(
+                                child: Icon(
+                                  Icons.add,
+                                  size: 50.0,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
+                    ],
+                  );
+                } else {
+                  return const Padding(
+                    padding: EdgeInsets.only(left: 32.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Your themes will appear here'),
                     ),
-                  ],
-                );
+                  );
+                }
               }
             },
           ),

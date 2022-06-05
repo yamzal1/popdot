@@ -80,21 +80,58 @@ class _DetailsState extends State<Details> {
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: FutureBuilder<List>(
-            initialData: const [],
             future: getSounds(widget.title, widget.isBaseTheme),
             builder: (context, snapshot) {
-              return GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                ),
-                scrollDirection: Axis.vertical,
-                itemCount: snapshot.data?.length,
-                itemBuilder: (context, index) {
-                  Sound sound = (snapshot.data?[index] as Sound);
+              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                  ),
+                  scrollDirection: Axis.vertical,
+                  itemCount: snapshot.data?.length,
+                  itemBuilder: (context, index) {
+                    Sound sound = (snapshot.data?[index] as Sound);
 
-                  return buildThemeCard(sound.name, sound.icon);
-                },
-              );
+                    return buildThemeCard(sound.name, sound.icon);
+                  },
+                );
+              } else {
+                return ListView(
+                  scrollDirection: Axis.vertical,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(left: 8.0),
+                      width: 150,
+                      height: 150,
+                      child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: Material(
+                                child: InkWell(
+                                  onTap: () {
+                                    print('');
+                                  },
+                                ),
+                              ),
+                            ),
+                            const Align(
+                              child: Icon(
+                                Icons.add,
+                                size: 50.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }
             },
           ),
         ),
@@ -113,15 +150,27 @@ class _DetailsState extends State<Details> {
         ),
         child: Stack(
           children: [
-            Ink.image(
-              image: Image.asset('assets/images/' + backgroundImage).image,
-              colorFilter:
-                  const ColorFilter.mode(AppColors.darkMole, BlendMode.color),
-              fit: BoxFit.cover,
-              child: InkWell(
-                onTap: () {
-                  _playAudio(title);
-                },
+            // Ink.image(
+            //   image: Image.asset('assets/images/' + backgroundImage).image,
+            //   colorFilter:
+            //       const ColorFilter.mode(AppColors.darkMole, BlendMode.color),
+            //   fit: BoxFit.cover,
+            // ),
+            Positioned.fill(
+              child: Material(
+                child: InkWell(
+                  onTap: () {
+                    _playAudio(title);
+                  },
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Icon(
+                IconData(int.parse(backgroundImage),
+                    fontFamily: 'MaterialIcons'),
+                size: 40.0,
               ),
             ),
             Container(

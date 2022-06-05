@@ -92,58 +92,58 @@ class _PopdotState extends State<Popdot> {
         appBar: null,
         backgroundColor: Colors.black,
         body: _pageOptions[_selectedIndex],
-        floatingActionButton: Builder(
-          builder: (context) {
-            return FloatingActionButton.extended(
-              elevation: 4.0,
-              icon: const Icon(Icons.add),
-              label: Text(fabString),
-              onPressed: () async {
-                if (_selectedIndex == 0) {
-                  // Page 1
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ThemeForm(),
-                    ),
-                  );
-                }
-                if (_selectedIndex == 1) {
-                  // Page 2
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SoundForm(),
-                    ),
-                  );
-                }
-              },
-            );
-          },
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: AppColors.darkGrey,
-              ),
-              label: 'Accueil',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.question_mark,
-                color: AppColors.darkGrey,
-              ),
-              label: 'Autre page ?',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: AppColors.darkGrey,
-          onTap: _onItemTapped,
-        ),
+        // floatingActionButton: Builder(
+        //   builder: (context) {
+        //     return FloatingActionButton.extended(
+        //       elevation: 4.0,
+        //       icon: const Icon(Icons.add),
+        //       label: Text(fabString),
+        //       onPressed: () async {
+        //         if (_selectedIndex == 0) {
+        //           // Page 1
+        //           Navigator.push(
+        //             context,
+        //             MaterialPageRoute(
+        //               builder: (context) => ThemeForm(),
+        //             ),
+        //           );
+        //         }
+        //         if (_selectedIndex == 1) {
+        //           // Page 2
+        //
+        //           Navigator.push(
+        //             context,
+        //             MaterialPageRoute(
+        //               builder: (context) => SoundForm(),
+        //             ),
+        //           );
+        //         }
+        //       },
+        //     );
+        //   },
+        // ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        // bottomNavigationBar: BottomNavigationBar(
+        //   items: const <BottomNavigationBarItem>[
+        //     BottomNavigationBarItem(
+        //       icon: Icon(
+        //         Icons.home,
+        //         color: AppColors.darkGrey,
+        //       ),
+        //       label: 'Accueil',
+        //     ),
+        //     BottomNavigationBarItem(
+        //       icon: Icon(
+        //         Icons.question_mark,
+        //         color: AppColors.darkGrey,
+        //       ),
+        //       label: 'Autre page ?',
+        //     ),
+        //   ],
+        //   currentIndex: _selectedIndex,
+        //   selectedItemColor: AppColors.darkGrey,
+        //   onTap: _onItemTapped,
+        // ),
       ),
     );
   }
