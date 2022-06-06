@@ -43,13 +43,12 @@ class _ThemeFormState extends State<ThemeForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
               child: Text(
                 'Nouveau thème',
                 style: TextStyle(
@@ -88,7 +87,6 @@ class _ThemeFormState extends State<ThemeForm> {
             ),
             const Padding(padding: EdgeInsets.all(10)),
             TextFormField(
-
               controller: DescController,
               maxLines: 5,
               decoration: InputDecoration(
@@ -134,7 +132,7 @@ class _ThemeFormState extends State<ThemeForm> {
                           setState(() {
                             imageIsPicked = true;
                           });
-                          //addImage(fileName, fileBytes);
+                          addImage(fileName, fileBytes);
                         }
                       }
                       onTextChange();
@@ -155,9 +153,9 @@ class _ThemeFormState extends State<ThemeForm> {
       ),
       floatingActionButton: _isButtonDisabled == false
           ? FloatingActionButton(
-              onPressed: () {
-                createTheme(
-                    TitreController.text, DescController.text, "wow"); //TODO
+              onPressed: () async {
+                createTheme(TitreController.text, DescController.text,
+                    await getImageURL(_nomImage));
               },
               tooltip: 'Valider',
               child: const Icon(Icons.check),
@@ -179,6 +177,4 @@ class _ThemeFormState extends State<ThemeForm> {
       });
     }
   }
-
-
 }
