@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:popdot/database/firebase_tools.dart';
 import 'package:popdot/database/hive_tools.dart';
+import 'package:popdot/pages/theme_sounds.dart';
 
 import '../theme/app_colors.dart';
 import 'about.dart';
-import 'theme_sounds.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -122,8 +123,13 @@ class _HomePageState extends State<HomePage> {
                               Positioned.fill(
                                 child: Material(
                                   child: InkWell(
-                                    onTap: () {
-                                      print('');
+                                    onTap: () async {
+                                      var picked = await ImagePicker()
+                                          .pickImage(
+                                              source: ImageSource.camera);
+
+                                      uploadFile('upload_test.jpg', 'images',
+                                          await picked?.readAsBytes());
                                     },
                                   ),
                                 ),
@@ -169,24 +175,43 @@ class _HomePageState extends State<HomePage> {
         ),
         child: Stack(
           children: [
-            Ink.image(
-              image: Image.asset('assets/images/' + backgroundImage).image,
-              colorFilter:
-                  const ColorFilter.mode(AppColors.darkMole, BlendMode.color),
-              fit: BoxFit.cover,
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Details(
-                        title: title,
-                        isBaseTheme: isBaseTheme,
-                      ),
+            FutureBuilder<String>(
+              future: getImageURL(backgroundImage),
+              builder: (context, snapshot) {
+                Widget child;
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  child = const CircularProgressIndicator(
+                    key: ValueKey(0),
+                  );
+                } else {
+                  child = Ink.image(
+                    key: const ValueKey(1),
+                    // image: Image.asset('assets/images/' + backgroundImage).image,
+                    image: NetworkImage(snapshot.data as String),
+                    colorFilter: const ColorFilter.mode(
+                        AppColors.darkMole, BlendMode.color),
+                    fit: BoxFit.cover,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Details(
+                              title: title,
+                              isBaseTheme: isBaseTheme,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   );
-                },
-              ),
+                }
+
+                return AnimatedSwitcher(
+                  duration: const Duration(seconds: 1),
+                  child: child,
+                );
+              },
             ),
             Container(
               padding: const EdgeInsets.all(16),
@@ -211,4 +236,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  animateLoading() {}
 }

@@ -117,7 +117,9 @@ Future<void> uploadFile(name, folder, file) async {
   storage.ref('$folder/$name').putData(file);
 }
 
-Future<void> downloadFile(name, folder) async {}
+Future<String> getImageURL(name) async {
+  return await storage.ref('images/$name').getDownloadURL();
+}
 
 Future<String> listFiles(filename) async {
   var filePath = await storage.ref().child('sounds/' + filename).fullPath;
