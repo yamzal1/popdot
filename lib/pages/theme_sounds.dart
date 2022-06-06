@@ -82,25 +82,15 @@ class _DetailsState extends State<Details> {
           child: FutureBuilder<List>(
             future: getSounds(widget.title, widget.isBaseTheme),
             builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                return GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                  ),
-                  scrollDirection: Axis.vertical,
-                  itemCount: snapshot.data?.length,
-                  itemBuilder: (context, index) {
-                    Sound sound = (snapshot.data?[index] as Sound);
-
-                    return buildThemeCard(sound.name, sound.icon);
-                  },
-                );
-              } else {
-                return ListView(
-                  scrollDirection: Axis.vertical,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(left: 8.0),
+              return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                ),
+                scrollDirection: Axis.vertical,
+                itemCount: snapshot.data!.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return SizedBox(
                       width: 150,
                       height: 150,
                       child: Card(
@@ -128,10 +118,14 @@ class _DetailsState extends State<Details> {
                           ],
                         ),
                       ),
-                    ),
-                  ],
-                );
-              }
+                    );
+                  } else {
+                    Sound sound = (snapshot.data?[index - 1] as Sound);
+
+                    return buildThemeCard(sound.name, sound.icon);
+                  }
+                },
+              );
             },
           ),
         ),

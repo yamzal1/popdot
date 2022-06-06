@@ -3,16 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:popdot/pages/theme_form.dart';
 
 import 'database/firebase_options.dart';
 import 'database/hive_tools.dart';
 import 'pages/home.dart';
-import 'pages/sound_form.dart';
 import 'pages/theme.dart';
 import 'pages/theme_library.dart';
 import 'pages/theme_sounds.dart';
-import 'theme/app_colors.dart';
 import 'widgets/404.dart';
 
 void main() async {
@@ -80,8 +77,17 @@ class _PopdotState extends State<Popdot> {
 
   ThemeData updateThemes(bool useMaterial3, bool useLightMode) {
     return ThemeData(
-        useMaterial3: useMaterial3,
-        brightness: useLightMode ? Brightness.light : Brightness.dark);
+      useMaterial3: useMaterial3,
+      brightness: useLightMode ? Brightness.light : Brightness.dark,
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(10),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
