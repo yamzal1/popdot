@@ -9,41 +9,42 @@ var storage = FirebaseStorage.instance;
 
 Future<void> makeABunchaThemes() async {
   var box = await Hive.openBox('themes');
-  await box.add(JukeboxTheme(
-      title: 'Spain',
-      description: 'sjdfjsdjfsjdkifjskldjfksjd',
-      image: 'upload_test.jpg',
-      sounds: []));
-  await box.add(JukeboxTheme(
-      title: 'Ratp',
-      description: 'sjdfjsdjfsjdkifjskldjfksjd',
-      image: 'upload_test.jpg',
-      sounds: []));
-  await box.add(JukeboxTheme(
-      title: 'Antony',
-      description: 'sjdfjsdjfsjdkifjskldjfksjd',
-      image: 'upload_test.jpg',
-      sounds: []));
-  await box.add(JukeboxTheme(
-      title: 'Orly',
-      description: 'sjdfjsdjfsjdkifjskldjfksjd',
-      image: 'upload_test.jpg',
-      sounds: []));
-  await box.add(JukeboxTheme(
-      title: 'Aeroport',
-      description: 'sjdfjsdjfsjdkifjskldjfksjd',
-      image: 'upload_test.jpg',
-      sounds: []));
-  await box.add(JukeboxTheme(
-      title: 'Ile',
-      description: 'dfjsdjfsjdkifjskldjfksjd',
-      image: 'upload_test.jpg',
-      sounds: []));
-  await box.add(JukeboxTheme(
-      title: 'France',
-      description: 'sjdfjsdjfsjdkifjskldjfksjd',
-      image: 'upload_test.jpg',
-      sounds: []));
+  box.clear();
+  // await box.add(JukeboxTheme(
+  //     title: 'Spain',
+  //     description: 'sjdfjsdjfsjdkifjskldjfksjd',
+  //     image: 'upload_test.jpg',
+  //     sounds: []));
+  // await box.add(JukeboxTheme(
+  //     title: 'Ratp',
+  //     description: 'sjdfjsdjfsjdkifjskldjfksjd',
+  //     image: 'upload_test.jpg',
+  //     sounds: []));
+  // await box.add(JukeboxTheme(
+  //     title: 'Antony',
+  //     description: 'sjdfjsdjfsjdkifjskldjfksjd',
+  //     image: 'upload_test.jpg',
+  //     sounds: []));
+  // await box.add(JukeboxTheme(
+  //     title: 'Orly',
+  //     description: 'sjdfjsdjfsjdkifjskldjfksjd',
+  //     image: 'upload_test.jpg',
+  //     sounds: []));
+  // await box.add(JukeboxTheme(
+  //     title: 'Aeroport',
+  //     description: 'sjdfjsdjfsjdkifjskldjfksjd',
+  //     image: 'upload_test.jpg',
+  //     sounds: []));
+  // await box.add(JukeboxTheme(
+  //     title: 'Ile',
+  //     description: 'dfjsdjfsjdkifjskldjfksjd',
+  //     image: 'upload_test.jpg',
+  //     sounds: []));
+  // await box.add(JukeboxTheme(
+  //     title: 'France',
+  //     description: 'sjdfjsdjfsjdkifjskldjfksjd',
+  //     image: 'upload_test.jpg',
+  //     sounds: []));
   await box.close();
 }
 
@@ -54,27 +55,30 @@ Future<void> createTheme(title, description, image) async {
   box.close();
 }
 
-Future<void> updateTheme(title, newTitle, description, image) async {
+Future<void> updateTheme(title, newTitle, description, image, sounds) async {
   var box = await Hive.openBox<JukeboxTheme>('themes');
 
   var i = 0;
   for (var theme in box.values) {
+    var newSounds = theme.sounds;
+    if (sounds.isNotEmpty) {
+      newSounds = sounds;
+    }
+
     if (theme.title == title) {
-      print(title);
-      print(newTitle);
       box.putAt(
           i,
           JukeboxTheme(
               title: newTitle,
               description: description,
               image: image,
-              sounds: theme.sounds));
+              sounds: newSounds));
     }
 
     i++;
   }
 
-  print(box.values.toList());
+  box.close();
 }
 
 Future<List> getThemes() async {
@@ -92,13 +96,13 @@ Future<List> getMadeForYouThemes() async {
 
   for (var doc in themesQuerySnapshot.docs) {
     QuerySnapshot soundsQuerySnapshot =
-        await doc.reference.collection('sounds').get();
+    await doc.reference.collection('sounds').get();
     List<Sound> sounds = [];
     for (var soundDoc in soundsQuerySnapshot.docs) {
       Sound newSound = Sound(
           name: soundDoc.id,
           fullpath: (soundDoc.data() as Map<String, dynamic>)['fullpath'],
-          icon: (soundDoc.data() as Map<String, dynamic>)['icon']);
+          image: (soundDoc.data() as Map<String, dynamic>)['icon']);
       sounds.add(newSound);
     }
 
@@ -125,19 +129,27 @@ Future<List> getSounds(themeName, isBaseTheme) async {
   }
 
   return (box.values
-          .toList()
-          .where((element) => element.title == themeName)
-          .first as JukeboxTheme)
+      .toList()
+      .where((element) => element.title == themeName)
+      .first as JukeboxTheme)
       .sounds;
 }
 
-Future<void> addSound(String name, file) async {
-  var box = await Hive.openBox<Sound>('sounds');
-  box.add(Sound(
-      name: name.replaceAll('.mp3', '').replaceAll('.m4a', ''),
-      fullpath: name,
-      icon: "plane or smth"));
-  uploadFile(name, 'sounds', file);
+Future<void> addSound(themeName, String name, filepath, image) async {
+  var box = await Hive.openBox<JukeboxTheme>('themes');
+
+  var newSound = Sound(name: name, fullpath: filepath, image: image);
+  var theme = (box.values
+      .toList()
+      .where((element) => element.title == themeName)
+      .first);
+
+  theme.sounds
+      .add(
+    newSound,
+  );
+
+  updateTheme(theme.title, theme.title, theme.description, theme.image, theme.sounds);
 }
 
 Future<void> addImage(name, file) async {
@@ -157,7 +169,10 @@ Future<String> getImageURL(name) async {
 }
 
 Future<String> listFiles(filename) async {
-  var filePath = await storage.ref().child('sounds/' + filename).fullPath;
+  var filePath = await storage
+      .ref()
+      .child('sounds/' + filename)
+      .fullPath;
   return filePath;
 }
 

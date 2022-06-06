@@ -54,23 +54,9 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: AppColors.white,
           title: Align(
             alignment: Alignment.centerLeft,
-            child: GestureDetector(
-              onDoubleTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext cxt) {
-                    return const AlertDialog(
-                      content: ThemeForm(),
-                      contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      backgroundColor: AppColors.white,
-                    );
-                  },
-                );
-              },
-              child: SizedBox(
-                height: 80,
-                child: Image.asset('assets/images/logo.png'),
-              ),
+            child: SizedBox(
+              height: 80,
+              child: Image.asset('assets/images/logo.png'),
             ),
           ),
           toolbarHeight: 80,
@@ -128,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                 if (title != 'Recent' && title != 'Made for you') {
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: snapshot.data!.length + 1,
+                    itemCount: (!snapshot.hasData) ? 1 : snapshot.data!.length + 1,
                     itemBuilder: (context, index) {
                       if (index == 0) {
                         return Container(
@@ -145,13 +131,25 @@ class _HomePageState extends State<HomePage> {
                                 Positioned.fill(
                                   child: Material(
                                     child: InkWell(
-                                      onTap: () async {
-                                        var picked = await ImagePicker()
-                                            .pickImage(
-                                                source: ImageSource.camera);
-
-                                        uploadFile('upload_test.jpg', 'images',
-                                            await picked?.readAsBytes());
+                                      onTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext cxt) {
+                                            return const AlertDialog(
+                                              content: ThemeForm(),
+                                              contentPadding:
+                                                  EdgeInsets.fromLTRB(
+                                                      10, 0, 10, 0),
+                                              backgroundColor: AppColors.white,
+                                            );
+                                          },
+                                        );
+                                        // var picked = await ImagePicker()
+                                        //     .pickImage(
+                                        //         source: ImageSource.camera);
+                                        //
+                                        // uploadFile('upload_test.jpg', 'images',
+                                        //     await picked?.readAsBytes());
                                       },
                                     ),
                                   ),
@@ -221,13 +219,24 @@ class _HomePageState extends State<HomePage> {
                               Positioned.fill(
                                 child: Material(
                                   child: InkWell(
-                                    onTap: () async {
-                                      var picked = await ImagePicker()
-                                          .pickImage(
-                                              source: ImageSource.camera);
-
-                                      uploadFile('upload_test.jpg', 'images',
-                                          await picked?.readAsBytes());
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext cxt) {
+                                          return const AlertDialog(
+                                            content: ThemeForm(),
+                                            contentPadding: EdgeInsets.fromLTRB(
+                                                10, 0, 10, 0),
+                                            backgroundColor: AppColors.white,
+                                          );
+                                        },
+                                      );
+                                      // var picked = await ImagePicker()
+                                      //     .pickImage(
+                                      //         source: ImageSource.camera);
+                                      //
+                                      // uploadFile('upload_test.jpg', 'images',
+                                      //     await picked?.readAsBytes());
                                     },
                                   ),
                                 ),
@@ -426,7 +435,8 @@ class _HomePageState extends State<HomePage> {
                                                                     .text,
                                                                 descriptionController
                                                                     .text,
-                                                                newImage);
+                                                                newImage,
+                                                                []);
                                                           },
                                                         ),
                                                       ),
@@ -467,7 +477,8 @@ class _HomePageState extends State<HomePage> {
                                                                     .text,
                                                                 descriptionController
                                                                     .text,
-                                                                newImage)
+                                                                newImage,
+                                                                [])
                                                           },
                                                         ),
                                                       ),
@@ -539,9 +550,5 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
-
-  saveTheme(title, newTitle, description, image) {
-    updateTheme(title, newTitle, description, image);
   }
 }

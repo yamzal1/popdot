@@ -31,7 +31,7 @@ class JukeboxTheme {
 
 @HiveType(typeId: 51)
 class Sound {
-  Sound({required this.name, required this.fullpath, required this.icon});
+  Sound({required this.name, required this.fullpath, required this.image});
 
   @HiveField(0)
   String name;
@@ -40,11 +40,11 @@ class Sound {
   String fullpath;
 
   @HiveField(2)
-  String icon;
+  String image;
 
   @override
   String toString() {
-    return "name: $name, fullPath: $fullpath, icon: $icon";
+    return "name: $name, fullPath: $fullpath, icon: $image";
   }
 }
 

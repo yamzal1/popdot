@@ -1,98 +1,136 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_iconpicker/flutter_iconpicker.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:image_picker/image_picker.dart';
+
 import '../database/firebase_tools.dart';
-import '../database/hive_tools.dart';
 import '../theme/app_colors.dart';
 
-// Define a custom Form widget.
 class SoundForm extends StatefulWidget {
-  const SoundForm({Key? key}) : super(key: key);
-  static const String soundBoxName = "sounds";
+  const SoundForm({Key? key, required this.themeName}) : super(key: key);
+
+  final String themeName;
 
   @override
   _SoundFormState createState() => _SoundFormState();
 }
 
-
 class _SoundFormState extends State<SoundForm> {
+  final myController = TextEditingController();
+  TextEditingController titreTheme = TextEditingController();
+  String _imageName = "";
+  String _soundName = "";
+  bool _isButtonDisabled = true;
+  bool imageIsPicked = false;
+  bool soundIsPicked = false;
 
-  late Box<Sound> soundBox;
-
-  Icon _icon = Icon(Icons.music_note, color: Colors.white);
-  String _titre = "Nouveau son";
-
-  _openIconPicker() async {
-    IconData? icon = await FlutterIconPicker.showIconPicker(context,
-        iconPackModes: [IconPack.material], adaptiveDialog: true);
-
-    if (icon != null) {
-      _icon = Icon(icon, color: Colors.white);
-      setState(() {});
-    }
-  }
+  final descController = TextEditingController();
+  final titleController = TextEditingController();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    soundBox = Hive.box(SoundForm.soundBoxName);
   }
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
+    myController.dispose();
     super.dispose();
   }
-
-  void prepSound() async {}
 
   void reset() {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ajouter un son'),
-      ),
+      backgroundColor: AppColors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.6,
-              child: Container(
-                decoration: BoxDecoration(color: AppColors.darkGrey),
-                child: ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                  leading: AnimatedSwitcher(
-                      duration: Duration(milliseconds: 300),
-                      child: _icon != null
-                          ? _icon
-                          : Container(
-                              child: Icon(
-                                Icons.music_note,
-                                color: Colors.white,
-                              ),
-                            )),
-                  title: Text(
-                    _titre,
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+          children: [
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+              child: Text(
+                'New sound',
+                style: TextStyle(
+                  fontSize: 35,
+                  fontWeight: FontWeight.bold,
+                  // color: Theme.of(context).primaryColor,
+                  color: AppColors.darkGrey,
+                ),
+              ),
+            ),
+            TextFormField(
+              controller: titleController,
+              decoration: InputDecoration(
+                labelText: 'Sound name',
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                  borderSide: const BorderSide(),
+                ),
+                //fillColor: Colors.green
+              ),
+              validator: (val) {
+                if (val!.isEmpty) {
+                  return 'Sound name cannot be empty';
+                } else {
+                  return null;
+                }
+              },
+              onChanged: (text) {
+                onTextChange();
+              },
+              keyboardType: TextInputType.name,
+              style: const TextStyle(
+                fontFamily: "Poppins",
+              ),
+            ),
+            const Padding(padding: EdgeInsets.all(10)),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 300.0,
+                child: Card(
+                  child: OutlinedButton(
+                    child: const Text('Choose an image'),
+                    onPressed: () async {
+                      var picked = await ImagePicker()
+                          .pickImage(source: ImageSource.camera);
+
+                      if (picked != null) {
+                        final fileBytes = await picked.readAsBytes();
+                        final fileName = picked.name;
+                        if (fileName.toString().endsWith(".jpg") ||
+                            fileName.toString().endsWith(".png")) {
+                          _imageName = fileName;
+
+                          setState(() {
+                            imageIsPicked = true;
+                          });
+                          uploadFile(fileName, 'images', fileBytes);
+                        }
+                      }
+                      onTextChange();
+                    },
                   ),
                 ),
               ),
             ),
+            Text(
+              _imageName,
+              style: const TextStyle(
+                  color: AppColors.darkGrey,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
-                width: 160.0,
-                height: 160.0,
+                width: 300.0,
                 child: Card(
                   child: OutlinedButton(
-                    child: const Text('Choisir un son'),
+                    child: const Text('Choose a sound'),
                     onPressed: () async {
                       var picked = await FilePicker.platform.pickFiles();
 
@@ -101,28 +139,51 @@ class _SoundFormState extends State<SoundForm> {
                         final fileName = picked.files.first.name;
                         if (fileName.toString().endsWith(".mp3") ||
                             fileName.toString().endsWith(".m4a")) {
-                          _titre = fileName;
-                          setState(() {});
-                          //addSound(fileName, fileBytes);
+                          _soundName = fileName;
+
+                          setState(() {
+                            soundIsPicked = true;
+                          });
+                          uploadFile(fileName, 'sounds', fileBytes);
                         }
                       }
+                      onTextChange();
                     },
                   ),
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: _openIconPicker,
-              child: const Text('Choisir une icone'),
+            Text(
+              _soundName,
+              style: const TextStyle(
+                  color: AppColors.darkGrey,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: prepSound,
-        tooltip: 'Valider',
-        child: const Icon(Icons.check),
-      ),
+      floatingActionButton: _isButtonDisabled == false
+          ? FloatingActionButton(
+              onPressed: () async {
+                addSound(widget.themeName, titleController.text, _soundName, _imageName);
+              },
+              tooltip: 'Validate',
+              child: const Icon(Icons.check),
+            )
+          : Container(),
     );
+  }
+
+  void onTextChange() {
+    if (titleController.text.isNotEmpty && imageIsPicked && soundIsPicked) {
+      setState(() {
+        _isButtonDisabled = false;
+      });
+    } else {
+      setState(() {
+        _isButtonDisabled = true;
+      });
+    }
   }
 }

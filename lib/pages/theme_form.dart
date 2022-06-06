@@ -1,6 +1,7 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:image_picker/image_picker.dart';
+
 import '../database/firebase_tools.dart';
 import '../database/hive_tools.dart';
 import '../theme/app_colors.dart';
@@ -8,6 +9,7 @@ import '../theme/app_colors.dart';
 class ThemeForm extends StatefulWidget {
   const ThemeForm({Key? key}) : super(key: key);
   static const String themeBoxName = "themes";
+
   @override
   _ThemeFormState createState() => _ThemeFormState();
 }
@@ -15,19 +17,16 @@ class ThemeForm extends StatefulWidget {
 class _ThemeFormState extends State<ThemeForm> {
   final myController = TextEditingController();
   TextEditingController titreTheme = TextEditingController();
-  late Box<JukeboxTheme> themeBox;
   String _nomImage = "";
   bool _isButtonDisabled = true;
   bool imageIsPicked = false;
 
-  final DescController = TextEditingController();
-  final TitreController = TextEditingController();
+  final descController = TextEditingController();
+  final titleController = TextEditingController();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    themeBox = Hive.box(ThemeForm.themeBoxName);
   }
 
   @override
@@ -50,7 +49,7 @@ class _ThemeFormState extends State<ThemeForm> {
             const Padding(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
               child: Text(
-                'Nouveau thème',
+                'New theme',
                 style: TextStyle(
                   fontSize: 35,
                   fontWeight: FontWeight.bold,
@@ -60,19 +59,19 @@ class _ThemeFormState extends State<ThemeForm> {
               ),
             ),
             TextFormField(
-              controller: TitreController,
+              controller: titleController,
               decoration: InputDecoration(
-                labelText: "Titre du thème",
+                labelText: 'Title',
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25.0),
-                  borderSide: BorderSide(),
+                  borderSide: const BorderSide(),
                 ),
                 //fillColor: Colors.green
               ),
               validator: (val) {
-                if (val?.length == 0) {
-                  return "Le titre ne peut pas être vide !";
+                if (val!.isEmpty) {
+                  return 'Title cannot be empty';
                 } else {
                   return null;
                 }
@@ -81,26 +80,25 @@ class _ThemeFormState extends State<ThemeForm> {
                 onTextChange();
               },
               keyboardType: TextInputType.name,
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: "Poppins",
               ),
             ),
             const Padding(padding: EdgeInsets.all(10)),
             TextFormField(
-              controller: DescController,
+              controller: descController,
               maxLines: 5,
               decoration: InputDecoration(
-                labelText: "Description du thème",
+                labelText: 'Description',
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25.0),
-                  borderSide: BorderSide(),
+                  borderSide: const BorderSide(),
                 ),
-                //fillColor: Colors.green
               ),
               validator: (desc) {
-                if (desc?.length == 0) {
-                  return "La description ne peut pas être vide !";
+                if (desc!.isEmpty) {
+                  return 'Description cannot be empty';
                 } else {
                   return null;
                 }
@@ -118,13 +116,14 @@ class _ThemeFormState extends State<ThemeForm> {
                 width: 300.0,
                 child: Card(
                   child: OutlinedButton(
-                    child: const Text('Choisir une image'),
+                    child: const Text('Choose an image'),
                     onPressed: () async {
-                      var picked = await FilePicker.platform.pickFiles();
+                      var picked = await ImagePicker()
+                          .pickImage(source: ImageSource.camera);
 
                       if (picked != null) {
-                        final fileBytes = picked.files.first.bytes;
-                        final fileName = picked.files.first.name;
+                        final fileBytes = await picked.readAsBytes();
+                        final fileName = picked.name;
                         if (fileName.toString().endsWith(".jpg") ||
                             fileName.toString().endsWith(".png")) {
                           _nomImage = fileName;
@@ -132,7 +131,7 @@ class _ThemeFormState extends State<ThemeForm> {
                           setState(() {
                             imageIsPicked = true;
                           });
-                          addImage(fileName, fileBytes);
+                          uploadFile(fileName, 'images', fileBytes);
                         }
                       }
                       onTextChange();
@@ -154,10 +153,10 @@ class _ThemeFormState extends State<ThemeForm> {
       floatingActionButton: _isButtonDisabled == false
           ? FloatingActionButton(
               onPressed: () async {
-                createTheme(TitreController.text, DescController.text,
-                    await getImageURL(_nomImage));
+                createTheme(
+                    titleController.text, descController.text, _nomImage);
               },
-              tooltip: 'Valider',
+              tooltip: 'Validate',
               child: const Icon(Icons.check),
             )
           : Container(),
@@ -165,8 +164,8 @@ class _ThemeFormState extends State<ThemeForm> {
   }
 
   void onTextChange() {
-    if (DescController.text.isNotEmpty &&
-        TitreController.text.isNotEmpty &&
+    if (descController.text.isNotEmpty &&
+        titleController.text.isNotEmpty &&
         imageIsPicked) {
       setState(() {
         _isButtonDisabled = false;
