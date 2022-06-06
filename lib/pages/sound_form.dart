@@ -132,18 +132,19 @@ class _SoundFormState extends State<SoundForm> {
                   child: OutlinedButton(
                     child: const Text('Choose a sound'),
                     onPressed: () async {
-                      var picked = await FilePicker.platform.pickFiles();
+                      var picked = await FilePicker.platform.pickFiles(withData: true);
 
                       if (picked != null) {
                         final fileBytes = picked.files.first.bytes;
                         final fileName = picked.files.first.name;
                         if (fileName.toString().endsWith(".mp3") ||
                             fileName.toString().endsWith(".m4a")) {
-                          _soundName = fileName;
+                          _soundName = fileName.replaceAll(' ', '');
 
                           setState(() {
                             soundIsPicked = true;
                           });
+
                           uploadFile(fileName, 'sounds', fileBytes);
                         }
                       }

@@ -159,9 +159,10 @@ Future<void> addImage(name, file) async {
   uploadFile(name, 'images', file);
 }
 
-Future<void> uploadFile(name, folder, file) async {
+Future<void> uploadFile(String name, folder, file) async {
   // Folders : sounds or images
-  storage.ref('$folder/$name').putData(file);
+  String formattedName = name.replaceAll(' ', '');
+  storage.ref('$folder/$formattedName').putData(file);
 }
 
 Future<String> getImageURL(name) async {
@@ -177,5 +178,6 @@ Future<String> listFiles(filename) async {
 }
 
 Future<String> getDownloadURL(filePath) async {
+  print(filePath);
   return await storage.ref(filePath).getDownloadURL();
 }

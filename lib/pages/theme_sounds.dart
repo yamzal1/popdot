@@ -114,7 +114,8 @@ class _DetailsState extends State<Details> {
                                             themeName: widget.title,
                                           ),
                                           contentPadding:
-                                              const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  10, 0, 10, 0),
                                           backgroundColor: AppColors.white,
                                         );
                                       },
@@ -204,7 +205,7 @@ class _DetailsState extends State<Details> {
                                             clipBehavior: Clip.antiAlias,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                              BorderRadius.circular(32),
+                                                  BorderRadius.circular(32),
                                             ),
                                             child: Stack(
                                               children: [
@@ -212,18 +213,18 @@ class _DetailsState extends State<Details> {
                                                   image: NetworkImage(
                                                       snapshot.data as String),
                                                   colorFilter:
-                                                  const ColorFilter.mode(
-                                                      AppColors.darkMole,
-                                                      BlendMode.color),
+                                                      const ColorFilter.mode(
+                                                          AppColors.darkMole,
+                                                          BlendMode.color),
                                                   fit: BoxFit.cover,
                                                   child: InkWell(
                                                     onTap: () async {
                                                       var picked =
-                                                      await ImagePicker()
-                                                          .pickImage(
-                                                          source:
-                                                          ImageSource
-                                                              .camera);
+                                                          await ImagePicker()
+                                                              .pickImage(
+                                                                  source:
+                                                                      ImageSource
+                                                                          .camera);
 
                                                       uploadFile(
                                                           'upload_test.jpg',
@@ -237,7 +238,7 @@ class _DetailsState extends State<Details> {
                                                   padding: EdgeInsets.all(16.0),
                                                   child: Align(
                                                     alignment:
-                                                    Alignment.bottomRight,
+                                                        Alignment.bottomRight,
                                                     child: Icon(
                                                       Icons.edit_outlined,
                                                       color: Colors.white,
@@ -261,23 +262,23 @@ class _DetailsState extends State<Details> {
                                             decoration: const InputDecoration(
                                               labelText: 'Title',
                                               suffixIcon:
-                                              Icon(Icons.edit_outlined),
+                                                  Icon(Icons.edit_outlined),
                                             ),
                                           ),
                                         ),
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                              MainAxisAlignment.center,
                                           children: [
                                             Padding(
                                               padding:
-                                              const EdgeInsets.all(8.0),
+                                                  const EdgeInsets.all(8.0),
                                               child: Card(
                                                 elevation: 2,
                                                 clipBehavior: Clip.antiAlias,
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                  BorderRadius.circular(90),
+                                                      BorderRadius.circular(90),
                                                 ),
                                                 child: Stack(
                                                   children: [
@@ -300,7 +301,7 @@ class _DetailsState extends State<Details> {
                                                     ),
                                                     const Padding(
                                                       padding:
-                                                      EdgeInsets.all(8.0),
+                                                          EdgeInsets.all(8.0),
                                                       child: Icon(
                                                         Icons.delete_outlined,
                                                         color: Colors.white,
@@ -313,13 +314,13 @@ class _DetailsState extends State<Details> {
                                             ),
                                             Padding(
                                               padding:
-                                              const EdgeInsets.all(8.0),
+                                                  const EdgeInsets.all(8.0),
                                               child: Card(
                                                 elevation: 2,
                                                 clipBehavior: Clip.antiAlias,
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                  BorderRadius.circular(90),
+                                                      BorderRadius.circular(90),
                                                 ),
                                                 child: Stack(
                                                   children: [
@@ -342,7 +343,7 @@ class _DetailsState extends State<Details> {
                                                     ),
                                                     const Padding(
                                                       padding:
-                                                      EdgeInsets.all(8.0),
+                                                          EdgeInsets.all(8.0),
                                                       child: Icon(
                                                         Icons.done,
                                                         color: Colors.white,
