@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:popdot/database/firebase_tools.dart';
 import 'package:popdot/database/hive_tools.dart';
+import 'package:popdot/pages/theme_form.dart';
 import 'package:popdot/pages/theme_sounds.dart';
 
 import '../theme/app_colors.dart';
@@ -29,9 +30,29 @@ class _HomePageState extends State<HomePage> {
           elevation: 0,
           backgroundColor: AppColors.white,
           title: Center(
-            child: SizedBox(
-              height: 80,
-              child: Image.asset('assets/images/logo.png'),
+            child: GestureDetector(
+              onDoubleTap:(){
+                showDialog(context: context,
+
+                    builder: (BuildContext cxt) {
+                      return AlertDialog(
+                          content: ThemeForm(),
+                        contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        backgroundColor: AppColors.white,
+
+                      );
+                    });
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => const ThemeForm(),
+                //   ),
+                // );
+              },
+              child: SizedBox(
+                height: 80,
+                child: Image.asset('assets/images/logo.png'),
+              ),
             ),
           ),
           toolbarHeight: 80,
@@ -236,6 +257,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  animateLoading() {}
 }
