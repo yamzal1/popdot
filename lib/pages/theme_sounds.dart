@@ -120,9 +120,7 @@ class _DetailsState extends State<Details> {
                                         );
                                       },
                                     );
-                                    setState(() {
-
-                                    });
+                                    setState(() {});
                                   },
                                 ),
                               ),
@@ -184,8 +182,8 @@ class _DetailsState extends State<Details> {
                     key: const ValueKey(1),
                     // image: Image.asset('assets/images/' + backgroundImage).image,
                     image: NetworkImage(snapshot.data as String),
-                    colorFilter: const ColorFilter.mode(
-                        AppColors.darkMole, BlendMode.color),
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.85), BlendMode.dstATop),
                     fit: BoxFit.cover,
                     child: InkWell(
                       onLongPress: () {
@@ -215,10 +213,10 @@ class _DetailsState extends State<Details> {
                                                 Ink.image(
                                                   image: NetworkImage(
                                                       snapshot.data as String),
-                                                  colorFilter:
-                                                      const ColorFilter.mode(
-                                                          AppColors.darkMole,
-                                                          BlendMode.color),
+                                                  colorFilter: ColorFilter.mode(
+                                                      Colors.black
+                                                          .withOpacity(0.85),
+                                                      BlendMode.dstATop),
                                                   fit: BoxFit.cover,
                                                   child: InkWell(
                                                     onTap: () async {

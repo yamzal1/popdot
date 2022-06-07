@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../database/firebase_tools.dart';
-import '../database/hive_tools.dart';
 import '../theme/app_colors.dart';
 
 class ThemeForm extends StatefulWidget {
@@ -155,9 +153,7 @@ class _ThemeFormState extends State<ThemeForm> {
               onPressed: () async {
                 createTheme(
                     titleController.text, descController.text, _nomImage);
-                setState(() {
-
-                });//Peut être inutile
+                setState(() {}); // Peut être inutile
                 Navigator.pop(context);
               },
               tooltip: 'Validate',

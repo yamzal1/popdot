@@ -114,7 +114,8 @@ class _HomePageState extends State<HomePage> {
                 if (title != 'Recent' && title != 'Made for you') {
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: (!snapshot.hasData) ? 1 : snapshot.data!.length + 1,
+                    itemCount:
+                        (!snapshot.hasData) ? 1 : snapshot.data!.length + 1,
                     itemBuilder: (context, index) {
                       if (index == 0) {
                         return Container(
@@ -144,10 +145,9 @@ class _HomePageState extends State<HomePage> {
                                             );
                                           },
                                         );
-                                        setState(() {
-
-                                        });
-                                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                        setState(() {});
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
                                           content: Text("Thème ajouté !"),
                                         ));
                                         // var picked = await ImagePicker()
@@ -237,9 +237,7 @@ class _HomePageState extends State<HomePage> {
                                           );
                                         },
                                       );
-                                      setState(() {
-
-                                      });
+                                      setState(() {});
                                       // var picked = await ImagePicker()
                                       //     .pickImage(
                                       //         source: ImageSource.camera);
@@ -313,10 +311,10 @@ class _HomePageState extends State<HomePage> {
                   child = Ink.image(
                     key: const ValueKey(1),
                     // image: Image.asset('assets/images/' + backgroundImage).image,
-                    image: NetworkImage(snapshot.data as String), //IMAGE NOIR ET BLANC
-                    colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.8), BlendMode.dstATop),
-                    // colorFilter: const ColorFilter.mode(
-                    //     AppColors.darkMole, BlendMode.color),
+                    image: NetworkImage(snapshot.data as String),
+                    //IMAGE NOIR ET BLANC
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.85), BlendMode.dstATop),
                     fit: BoxFit.cover,
                     child: InkWell(
                       onLongPress: () {
@@ -346,10 +344,10 @@ class _HomePageState extends State<HomePage> {
                                                 Ink.image(
                                                   image: NetworkImage(
                                                       snapshot.data as String),
-                                                  colorFilter:
-                                                      const ColorFilter.mode(
-                                                          AppColors.darkMole,
-                                                          BlendMode.color),
+                                                  colorFilter: ColorFilter.mode(
+                                                      Colors.black
+                                                          .withOpacity(0.85),
+                                                      BlendMode.dstATop),
                                                   fit: BoxFit.cover,
                                                   child: InkWell(
                                                     onTap: () async {
@@ -439,21 +437,7 @@ class _HomePageState extends State<HomePage> {
                                                         color: Colors.red,
                                                         child: InkWell(
                                                           onTap: () {
-                                                            // updateTheme(
-                                                            //     title,
-                                                            //     titleController
-                                                            //         .text,
-                                                            //     descriptionController
-                                                            //         .text,
-                                                            //     newImage,
-                                                            //     []);
-
-
-
-
-                                                           // deleteTheme(1);
-
-
+                                                            deleteTheme(title);
                                                           },
                                                         ),
                                                       ),
@@ -566,7 +550,6 @@ class _HomePageState extends State<HomePage> {
                             blurRadius: 1.0,
                             color: Colors.black,
                           ),
-
                         ],
                       ),
                     ),

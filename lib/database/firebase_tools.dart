@@ -55,14 +55,23 @@ Future<void> createTheme(title, description, image) async {
   box.close();
 }
 
-deleteTheme(int index) async {
+Future<void> deleteTheme(title) async {
   var box = await Hive.openBox<JukeboxTheme>('themes');
-  box.deleteAt(index);
-  print("delete theme : index : $index");
-} //supprime la ligne dans la box dont l'id est visé
+  var i = 0;
+  for (var theme in box.values) {
+    if (theme.title == title) {
+      print(title);
 
+      box.deleteAt(i);
+    }
 
-Future<void> updateTheme(title, newTitle, description, image, sounds) async { //AJOUTER UN SON A UN THEME
+    i++;
+  }
+
+  box.close();
+}
+
+Future<void> updateTheme(title, newTitle, description, image, sounds) async {
   var box = await Hive.openBox<JukeboxTheme>('themes');
 
   var i = 0;
@@ -103,7 +112,7 @@ Future<List> getMadeForYouThemes() async {
 
   for (var doc in themesQuerySnapshot.docs) {
     QuerySnapshot soundsQuerySnapshot =
-    await doc.reference.collection('sounds').get();
+        await doc.reference.collection('sounds').get();
     List<Sound> sounds = [];
     for (var soundDoc in soundsQuerySnapshot.docs) {
       Sound newSound = Sound(
@@ -136,9 +145,9 @@ Future<List> getSounds(themeName, isBaseTheme) async {
   }
 
   return (box.values
-      .toList()
-      .where((element) => element.title == themeName)
-      .first as JukeboxTheme)
+          .toList()
+          .where((element) => element.title == themeName)
+          .first as JukeboxTheme)
       .sounds;
 }
 
@@ -151,12 +160,12 @@ Future<void> addSound(themeName, String name, filepath, image) async {
       .where((element) => element.title == themeName)
       .first);
 
-  theme.sounds
-      .add(
+  theme.sounds.add(
     newSound,
   );
 
-  updateTheme(theme.title, theme.title, theme.description, theme.image, theme.sounds);
+  updateTheme(
+      theme.title, theme.title, theme.description, theme.image, theme.sounds);
 }
 
 Future<void> addImage(name, file) async {
@@ -177,10 +186,7 @@ Future<String> getImageURL(name) async {
 }
 
 Future<String> listFiles(filename) async {
-  var filePath = await storage
-      .ref()
-      .child('sounds/' + filename)
-      .fullPath;
+  var filePath = await storage.ref().child('sounds/' + filename).fullPath;
   return filePath;
 }
 
