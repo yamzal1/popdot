@@ -155,6 +155,10 @@ class _ThemeFormState extends State<ThemeForm> {
               onPressed: () async {
                 createTheme(
                     titleController.text, descController.text, _nomImage);
+                setState(() {
+
+                });//Peut être inutile
+                Navigator.pop(context);
               },
               tooltip: 'Validate',
               child: const Icon(Icons.check),

@@ -131,8 +131,8 @@ class _HomePageState extends State<HomePage> {
                                 Positioned.fill(
                                   child: Material(
                                     child: InkWell(
-                                      onTap: () {
-                                        showDialog(
+                                      onTap: () async {
+                                        await showDialog(
                                           context: context,
                                           builder: (BuildContext cxt) {
                                             return const AlertDialog(
@@ -144,6 +144,12 @@ class _HomePageState extends State<HomePage> {
                                             );
                                           },
                                         );
+                                        setState(() {
+
+                                        });
+                                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                          content: Text("Thème ajouté !"),
+                                        ));
                                         // var picked = await ImagePicker()
                                         //     .pickImage(
                                         //         source: ImageSource.camera);

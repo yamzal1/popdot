@@ -105,8 +105,8 @@ class _DetailsState extends State<Details> {
                             Positioned.fill(
                               child: Material(
                                 child: InkWell(
-                                  onTap: () {
-                                    showDialog(
+                                  onTap: () async {
+                                    await showDialog(
                                       context: context,
                                       builder: (BuildContext cxt) {
                                         return AlertDialog(
@@ -120,6 +120,9 @@ class _DetailsState extends State<Details> {
                                         );
                                       },
                                     );
+                                    setState(() {
+
+                                    });
                                   },
                                 ),
                               ),
