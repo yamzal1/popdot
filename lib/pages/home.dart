@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
           elevation: 0,
           backgroundColor: AppColors.white,
           title: Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center,
             child: SizedBox(
               height: 80,
               child: Image.asset('assets/images/logo.png'),

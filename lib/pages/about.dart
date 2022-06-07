@@ -197,7 +197,7 @@ class About extends StatelessWidget {
                               ListTile(
                                 title: Text("Louis T."),
                                 subtitle: Text(
-                                    "?"),
+                                    "😶"),
                                 leading: Icon(
                                   Icons.android_rounded,
                                   color: AppColors.darkGrey,
@@ -213,7 +213,7 @@ class About extends StatelessWidget {
                               ),
                               ListTile(
                                 title: Text("Yannis"),
-                                subtitle: Text(""),
+                                subtitle: Text("oui"),
                                 leading: Icon(
                                   Icons.android_rounded,
                                   color: AppColors.darkGrey,

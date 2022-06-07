@@ -7,6 +7,7 @@ import 'package:popdot/pages/sound_form.dart';
 
 import '../database/hive_tools.dart';
 import '../theme/app_colors.dart';
+import '../widgets/404.dart';
 
 class Details extends StatefulWidget {
   const Details({Key? key, required this.title, required this.isBaseTheme})
@@ -21,6 +22,10 @@ class Details extends StatefulWidget {
 
 class _DetailsState extends State<Details> {
   late Box<JukeboxTheme> themeBox;
+  Color color = AppColors.white;
+  Color textColor = Colors.black;
+
+
 
   @override
   void initState() {
@@ -31,6 +36,19 @@ class _DetailsState extends State<Details> {
     } else {
       themeBox = Hive.box<JukeboxTheme>('themes');
     }
+
+    var a = getSounds(widget.title, widget.isBaseTheme);
+if(themeBox.values.toList().where((element) => element.title == widget.title).first.sounds.isEmpty){ //EST CE QU'IL Y A DES SONS ?
+  color = AppColors.darkGrey;
+  textColor = Colors.white;
+
+}
+else {
+  color = AppColors.white;
+  textColor = Colors.black;
+
+}
+
   }
 
   _playAudio(soundName) async {
@@ -59,7 +77,9 @@ class _DetailsState extends State<Details> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: AppColors.white,
+        backgroundColor: color,
+        // backgroundColor: AppColors.darkGrey,
+        // backgroundColor: AppColors.white,
         title: Center(
           child: SizedBox(
             height: 80,
@@ -67,8 +87,8 @@ class _DetailsState extends State<Details> {
               alignment: Alignment.centerLeft,
               child: Text(
                 widget.title,
-                style: const TextStyle(
-                  color: Colors.black,
+                style:  TextStyle(
+                  color: textColor,
                   fontSize: 25.0,
                 ),
               ),
@@ -77,13 +97,92 @@ class _DetailsState extends State<Details> {
         ),
         toolbarHeight: 80,
       ),
-      backgroundColor: AppColors.white,
+      backgroundColor: color,
+      // backgroundColor: AppColors.darkGrey,
+      // backgroundColor: AppColors.white,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: FutureBuilder<List>(
             future: getSounds(widget.title, widget.isBaseTheme),
             builder: (context, snapshot) {
+              if (snapshot.data?.length == 0){
+
+                return Column(
+
+                  children: [
+
+
+
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: SizedBox(
+                        width: 200,
+                        height: 200,
+                        child: Card(
+                          clipBehavior: Clip.antiAlias,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Stack(
+                            children: [
+                              Positioned.fill(
+                                child: Material(
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (BuildContext cxt) {
+                                          return AlertDialog(
+                                            content: SoundForm(
+                                              themeName: widget.title,
+                                            ),
+                                            contentPadding:
+                                            const EdgeInsets.fromLTRB(
+                                                10, 10, 10, 10),
+                                            backgroundColor: AppColors.white,
+                                          );
+                                        },
+                                      );
+                                      setState(() {
+
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              const Align(
+                                child: Icon(
+                                  Icons.add,
+                                  size: 50.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height/1.5,
+                        child: NoSound()),
+                  ],
+                );
+              }
               return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
@@ -91,6 +190,8 @@ class _DetailsState extends State<Details> {
                 scrollDirection: Axis.vertical,
                 itemCount: (!snapshot.hasData) ? 1 : snapshot.data!.length + 1,
                 itemBuilder: (context, index) {
+
+
                   if (index == 0) {
                     return SizedBox(
                       width: 150,

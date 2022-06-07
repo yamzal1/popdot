@@ -168,7 +168,12 @@ class _SoundFormState extends State<SoundForm> {
           ? FloatingActionButton(
               onPressed: () async {
                 addSound(widget.themeName, titleController.text, _soundName, _imageName);
+                setState(() {
+
+                });
+                Navigator.pop(context);
               },
+
               tooltip: 'Validate',
               child: const Icon(Icons.check),
             )
