@@ -313,9 +313,10 @@ class _HomePageState extends State<HomePage> {
                   child = Ink.image(
                     key: const ValueKey(1),
                     // image: Image.asset('assets/images/' + backgroundImage).image,
-                    image: NetworkImage(snapshot.data as String),
-                    colorFilter: const ColorFilter.mode(
-                        AppColors.darkMole, BlendMode.color),
+                    image: NetworkImage(snapshot.data as String), //IMAGE NOIR ET BLANC
+                    colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.8), BlendMode.dstATop),
+                    // colorFilter: const ColorFilter.mode(
+                    //     AppColors.darkMole, BlendMode.color),
                     fit: BoxFit.cover,
                     child: InkWell(
                       onLongPress: () {
@@ -552,10 +553,21 @@ class _HomePageState extends State<HomePage> {
                   Align(
                     alignment: Alignment.bottomLeft,
                     child: Text(
-                      title,
+                      title, //TITRE DU THEME SUR LES CARTES
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,
+                        shadows: <Shadow>[
+                          Shadow(
+                            blurRadius: 5.0,
+                            color: Colors.black,
+                          ),
+                          Shadow(
+                            blurRadius: 1.0,
+                            color: Colors.black,
+                          ),
+
+                        ],
                       ),
                     ),
                   ),
