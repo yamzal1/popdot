@@ -55,7 +55,14 @@ Future<void> createTheme(title, description, image) async {
   box.close();
 }
 
-Future<void> updateTheme(title, newTitle, description, image, sounds) async {
+deleteTheme(int index) async {
+  var box = await Hive.openBox<JukeboxTheme>('themes');
+  box.deleteAt(index);
+  print("delete theme : index : $index");
+} //supprime la ligne dans la box dont l'id est visé
+
+
+Future<void> updateTheme(title, newTitle, description, image, sounds) async { //AJOUTER UN SON A UN THEME
   var box = await Hive.openBox<JukeboxTheme>('themes');
 
   var i = 0;

@@ -225,8 +225,8 @@ class _HomePageState extends State<HomePage> {
                               Positioned.fill(
                                 child: Material(
                                   child: InkWell(
-                                    onTap: () {
-                                      showDialog(
+                                    onTap: () async {
+                                      await showDialog(
                                         context: context,
                                         builder: (BuildContext cxt) {
                                           return const AlertDialog(
@@ -237,6 +237,9 @@ class _HomePageState extends State<HomePage> {
                                           );
                                         },
                                       );
+                                      setState(() {
+
+                                      });
                                       // var picked = await ImagePicker()
                                       //     .pickImage(
                                       //         source: ImageSource.camera);
@@ -435,14 +438,21 @@ class _HomePageState extends State<HomePage> {
                                                         color: Colors.red,
                                                         child: InkWell(
                                                           onTap: () {
-                                                            updateTheme(
-                                                                title,
-                                                                titleController
-                                                                    .text,
-                                                                descriptionController
-                                                                    .text,
-                                                                newImage,
-                                                                []);
+                                                            // updateTheme(
+                                                            //     title,
+                                                            //     titleController
+                                                            //         .text,
+                                                            //     descriptionController
+                                                            //         .text,
+                                                            //     newImage,
+                                                            //     []);
+
+
+
+
+                                                           // deleteTheme(1);
+
+
                                                           },
                                                         ),
                                                       ),
