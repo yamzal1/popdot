@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:popdot/database/firebase_tools.dart';
+import 'package:popdot/pages/sound_form.dart';
 
 import '../database/hive_tools.dart';
 import '../theme/app_colors.dart';
+import '../widgets/404.dart';
 
 class Details extends StatefulWidget {
   const Details({Key? key, required this.title, required this.isBaseTheme})
@@ -19,6 +22,10 @@ class Details extends StatefulWidget {
 
 class _DetailsState extends State<Details> {
   late Box<JukeboxTheme> themeBox;
+  Color color = AppColors.white;
+  Color textColor = Colors.black;
+
+
 
   @override
   void initState() {
@@ -29,6 +36,19 @@ class _DetailsState extends State<Details> {
     } else {
       themeBox = Hive.box<JukeboxTheme>('themes');
     }
+
+    var a = getSounds(widget.title, widget.isBaseTheme);
+if(themeBox.values.toList().where((element) => element.title == widget.title).first.sounds.isEmpty){ //EST CE QU'IL Y A DES SONS ?
+  color = AppColors.darkGrey;
+  textColor = Colors.white;
+
+}
+else {
+  color = AppColors.white;
+  textColor = Colors.black;
+
+}
+
   }
 
   _playAudio(soundName) async {
@@ -57,7 +77,9 @@ class _DetailsState extends State<Details> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: AppColors.white,
+        backgroundColor: color,
+        // backgroundColor: AppColors.darkGrey,
+        // backgroundColor: AppColors.white,
         title: Center(
           child: SizedBox(
             height: 80,
@@ -65,8 +87,8 @@ class _DetailsState extends State<Details> {
               alignment: Alignment.centerLeft,
               child: Text(
                 widget.title,
-                style: const TextStyle(
-                  color: Colors.black,
+                style:  TextStyle(
+                  color: textColor,
                   fontSize: 25.0,
                 ),
               ),
@@ -75,24 +97,150 @@ class _DetailsState extends State<Details> {
         ),
         toolbarHeight: 80,
       ),
-      backgroundColor: AppColors.white,
+      backgroundColor: color,
+      // backgroundColor: AppColors.darkGrey,
+      // backgroundColor: AppColors.white,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: FutureBuilder<List>(
-            initialData: const [],
             future: getSounds(widget.title, widget.isBaseTheme),
             builder: (context, snapshot) {
+              if (snapshot.data?.length == 0){
+
+                return Column(
+
+                  children: [
+
+
+
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: SizedBox(
+                        width: 200,
+                        height: 200,
+                        child: Card(
+                          clipBehavior: Clip.antiAlias,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Stack(
+                            children: [
+                              Positioned.fill(
+                                child: Material(
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (BuildContext cxt) {
+                                          return AlertDialog(
+                                            content: SoundForm(
+                                              themeName: widget.title,
+                                            ),
+                                            contentPadding:
+                                            const EdgeInsets.fromLTRB(
+                                                10, 10, 10, 10),
+                                            backgroundColor: AppColors.white,
+                                          );
+                                        },
+                                      );
+                                      setState(() {
+
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              const Align(
+                                child: Icon(
+                                  Icons.add,
+                                  size: 50.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height/1.5,
+                        child: NoSound()),
+                  ],
+                );
+              }
               return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                 ),
                 scrollDirection: Axis.vertical,
-                itemCount: snapshot.data?.length,
+                itemCount: (!snapshot.hasData) ? 1 : snapshot.data!.length + 1,
                 itemBuilder: (context, index) {
-                  Sound sound = (snapshot.data?[index] as Sound);
 
-                  return buildThemeCard(sound.name, sound.icon);
+
+                  if (index == 0) {
+                    return SizedBox(
+                      width: 150,
+                      height: 150,
+                      child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: Material(
+                                child: InkWell(
+                                  onTap: () async {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (BuildContext cxt) {
+                                        return AlertDialog(
+                                          content: SoundForm(
+                                            themeName: widget.title,
+                                          ),
+                                          contentPadding:
+                                              const EdgeInsets.fromLTRB(
+                                                  10, 0, 10, 0),
+                                          backgroundColor: AppColors.white,
+                                        );
+                                      },
+                                    );
+                                    setState(() {});
+                                  },
+                                ),
+                              ),
+                            ),
+                            const Align(
+                              child: Icon(
+                                Icons.add,
+                                size: 50.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else {
+                    Sound sound = (snapshot.data?[index - 1] as Sound);
+
+                    return buildThemeCard(sound.name, sound.image);
+                  }
                 },
               );
             },
@@ -103,6 +251,15 @@ class _DetailsState extends State<Details> {
   }
 
   SizedBox buildThemeCard(title, backgroundImage) {
+    TextEditingController titleController = TextEditingController();
+    TextEditingController descriptionController = TextEditingController();
+
+    titleController.text = title;
+
+    var newImage = backgroundImage;
+    var currentTitle = title;
+    var newTitle = title;
+
     return SizedBox(
       width: 150,
       height: 150,
@@ -113,16 +270,213 @@ class _DetailsState extends State<Details> {
         ),
         child: Stack(
           children: [
-            Ink.image(
-              image: Image.asset('assets/images/' + backgroundImage).image,
-              colorFilter:
-                  const ColorFilter.mode(AppColors.darkMole, BlendMode.color),
-              fit: BoxFit.cover,
-              child: InkWell(
-                onTap: () {
-                  _playAudio(title);
-                },
-              ),
+            FutureBuilder<String>(
+              future: getImageURL(backgroundImage),
+              builder: (context, snapshot) {
+                Widget child;
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  child = const CircularProgressIndicator(
+                    key: ValueKey(0),
+                  );
+                } else {
+                  child = Ink.image(
+                    key: const ValueKey(1),
+                    // image: Image.asset('assets/images/' + backgroundImage).image,
+                    image: NetworkImage(snapshot.data as String),
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.85), BlendMode.dstATop),
+                    fit: BoxFit.cover,
+                    child: InkWell(
+                      onLongPress: () {
+                        showBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return Wrap(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 32.0, bottom: 32.0),
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          width: 200,
+                                          height: 200,
+                                          child: Card(
+                                            clipBehavior: Clip.antiAlias,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(32),
+                                            ),
+                                            child: Stack(
+                                              children: [
+                                                Ink.image(
+                                                  image: NetworkImage(
+                                                      snapshot.data as String),
+                                                  colorFilter: ColorFilter.mode(
+                                                      Colors.black
+                                                          .withOpacity(0.85),
+                                                      BlendMode.dstATop),
+                                                  fit: BoxFit.cover,
+                                                  child: InkWell(
+                                                    onTap: () async {
+                                                      var picked =
+                                                          await ImagePicker()
+                                                              .pickImage(
+                                                                  source:
+                                                                      ImageSource
+                                                                          .camera);
+
+                                                      uploadFile(
+                                                          'upload_test.jpg',
+                                                          'images',
+                                                          await picked
+                                                              ?.readAsBytes());
+                                                    },
+                                                  ),
+                                                ),
+                                                const Padding(
+                                                  padding: EdgeInsets.all(16.0),
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.bottomRight,
+                                                    child: Icon(
+                                                      Icons.edit_outlined,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 64.0,
+                                              right: 64.0,
+                                              top: 16.0),
+                                          child: TextField(
+                                            onChanged: (value) {
+                                              newTitle = value;
+                                            },
+                                            controller: titleController,
+                                            decoration: const InputDecoration(
+                                              labelText: 'Title',
+                                              suffixIcon:
+                                                  Icon(Icons.edit_outlined),
+                                            ),
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Card(
+                                                elevation: 2,
+                                                clipBehavior: Clip.antiAlias,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(90),
+                                                ),
+                                                child: Stack(
+                                                  children: [
+                                                    Positioned.fill(
+                                                      child: Material(
+                                                        color: Colors.red,
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            updateTheme(
+                                                                title,
+                                                                titleController
+                                                                    .text,
+                                                                descriptionController
+                                                                    .text,
+                                                                newImage,
+                                                                []);
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const Padding(
+                                                      padding:
+                                                          EdgeInsets.all(8.0),
+                                                      child: Icon(
+                                                        Icons.delete_outlined,
+                                                        color: Colors.white,
+                                                        size: 25.0,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Card(
+                                                elevation: 2,
+                                                clipBehavior: Clip.antiAlias,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(90),
+                                                ),
+                                                child: Stack(
+                                                  children: [
+                                                    Positioned.fill(
+                                                      child: Material(
+                                                        color: Colors.blue,
+                                                        child: InkWell(
+                                                          onTap: () => {
+                                                            updateSound(
+                                                                widget.title,
+                                                                titleController
+                                                                    .text,
+                                                                newImage)
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const Padding(
+                                                      padding:
+                                                          EdgeInsets.all(8.0),
+                                                      child: Icon(
+                                                        Icons.done,
+                                                        color: Colors.white,
+                                                        size: 25.0,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                        setState(() {});
+                      },
+                      onTap: () {
+                        _playAudio(title);
+                      },
+                    ),
+                  );
+                }
+
+                return AnimatedSwitcher(
+                  duration: const Duration(seconds: 1),
+                  child: child,
+                );
+              },
             ),
             Container(
               padding: const EdgeInsets.all(16),
@@ -134,7 +488,7 @@ class _DetailsState extends State<Details> {
                     child: Text(
                       title,
                       style: const TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: 20,
                       ),
                     ),

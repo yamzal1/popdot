@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import '../database/hive_tools.dart';
 import '../theme/app_colors.dart';
 
 class About extends StatelessWidget {
   const About({Key? key}) : super(key: key);
 
+
+
   @override
   Widget build(BuildContext context) {
+
+
+
+
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -19,13 +28,19 @@ class About extends StatelessWidget {
           ),
           toolbarHeight: MediaQuery.of(context).size.height * 0.2,
         ),
+
         backgroundColor: AppColors.white,
         body: Center(
+
+
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.9,
             child: SingleChildScrollView(
               child: Stack(
                 children: <Widget>[
+
+
+
                   Container(
                     margin: const EdgeInsets.fromLTRB(15, 30, 15, 15),
                     child: Column(
@@ -84,9 +99,13 @@ class About extends StatelessWidget {
                             ),
                           ],
                         ),
+
+
                         const SizedBox(
                           height: 20,
                         ),
+
+
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -136,6 +155,78 @@ class About extends StatelessWidget {
                             ],
                           ),
                         ),
+
+
+
+
+
+                        const SizedBox(
+                          height: 20,
+                        ),
+
+
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Column(
+                            children: const <Widget>[
+                              ListTile(
+                                title: Text("Répartition des tâches"),
+                              ),
+                              Divider(),
+                              ListTile(
+                                title: Text("Jules"),
+                                subtitle: Text(
+                                    "tout"),
+                                leading: Icon(
+                                  Icons.android_rounded,
+                                  color: AppColors.darkGrey,
+                                ),
+                              ),
+                              ListTile(
+                                title: Text("Alexandre"),
+                                subtitle:
+                                    Text("Conception des écrans \nImplémentation des formulaires et des thèmes \ntravail backend"),
+                                leading: Icon(
+                                  Icons.android_rounded,
+                                  color: AppColors.darkGrey,
+                                ),
+                              ),
+                              ListTile(
+                                title: Text("Louis T."),
+                                subtitle: Text(
+                                    "😶"),
+                                leading: Icon(
+                                  Icons.android_rounded,
+                                  color: AppColors.darkGrey,
+                                ),
+                              ),
+                              ListTile(
+                                title: Text("Louis C."),
+                                subtitle: Text("Conception des écrans \nFont-End formulaires"),
+                                leading: Icon(
+                                  Icons.android_rounded,
+                                  color: AppColors.darkGrey,
+                                ),
+                              ),
+                              ListTile(
+                                title: Text("Yannis"),
+                                subtitle: Text("oui"),
+                                leading: Icon(
+                                  Icons.android_rounded,
+                                  color: AppColors.darkGrey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+
+
+
+
                       ],
                     ),
                   )

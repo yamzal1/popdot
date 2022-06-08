@@ -1,33 +1,30 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
-import '../database/firebase_tools.dart';
-import '../database/hive_tools.dart';
-import '../theme/app_colors.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../database/firebase_tools.dart';
+import '../theme/app_colors.dart';
 
 class ThemeForm extends StatefulWidget {
   const ThemeForm({Key? key}) : super(key: key);
-  //static const String soundBoxName = "sounds";
+  static const String themeBoxName = "themes";
+
   @override
   _ThemeFormState createState() => _ThemeFormState();
 }
 
-
 class _ThemeFormState extends State<ThemeForm> {
-
   final myController = TextEditingController();
   TextEditingController titreTheme = TextEditingController();
-  //late Box<Sound> soundBox;
   String _nomImage = "";
-  String _nomTheme = "Thème";
+  bool _isButtonDisabled = true;
+  bool imageIsPicked = false;
 
+  final descController = TextEditingController();
+  final titleController = TextEditingController();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    //soundBox = Hive.box(ThemeForm.soundBoxName);
   }
 
   @override
@@ -37,46 +34,78 @@ class _ThemeFormState extends State<ThemeForm> {
     super.dispose();
   }
 
-
-
   void reset() {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ajouter un thème'),
-      ),
+      backgroundColor: AppColors.white,
       body: Center(
-
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.6,
-              child: TextFormField(
-                decoration: new InputDecoration(
-                  labelText: "Titre du thème",
-                  fillColor: Colors.white,
-                  border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: new BorderSide(
-                    ),
-                  ),
-                  //fillColor: Colors.green
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+              child: Text(
+                'New theme',
+                style: TextStyle(
+                  fontSize: 35,
+                  fontWeight: FontWeight.bold,
+                  // color: Theme.of(context).primaryColor,
+                  color: AppColors.darkGrey,
                 ),
-                validator: (val) {
-                  if(val?.length==0) {
-                    return "Le titre ne peut pas être vide !";
-                  }else{
-                    return null;
-                  }
-                },
-                keyboardType: TextInputType.name,
-                style: new TextStyle(
-                  fontFamily: "Poppins",
+              ),
+            ),
+            TextFormField(
+              controller: titleController,
+              decoration: InputDecoration(
+                labelText: 'Title',
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                  borderSide: const BorderSide(),
                 ),
+                //fillColor: Colors.green
+              ),
+              validator: (val) {
+                if (val!.isEmpty) {
+                  return 'Title cannot be empty';
+                } else {
+                  return null;
+                }
+              },
+              onChanged: (text) {
+                onTextChange();
+              },
+              keyboardType: TextInputType.name,
+              style: const TextStyle(
+                fontFamily: "Poppins",
+              ),
+            ),
+            const Padding(padding: EdgeInsets.all(10)),
+            TextFormField(
+              controller: descController,
+              maxLines: 5,
+              decoration: InputDecoration(
+                labelText: 'Description',
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                  borderSide: const BorderSide(),
+                ),
+              ),
+              validator: (desc) {
+                if (desc!.isEmpty) {
+                  return 'Description cannot be empty';
+                } else {
+                  return null;
+                }
+              },
+              onChanged: (text) {
+                onTextChange();
+              },
+              style: const TextStyle(
+                fontFamily: "Poppins",
               ),
             ),
             Padding(
@@ -85,46 +114,66 @@ class _ThemeFormState extends State<ThemeForm> {
                 width: 300.0,
                 child: Card(
                   child: OutlinedButton(
-                    child: const Text('Choisir une image'),
+                    child: const Text('Choose an image'),
                     onPressed: () async {
-                      var picked =
-                      await FilePicker.platform.pickFiles();
+                      var picked = await ImagePicker()
+                          .pickImage(source: ImageSource.camera);
 
                       if (picked != null) {
-                        final fileBytes = picked.files.first.bytes;
-                        final fileName = picked.files.first.name;
+                        final fileBytes = await picked.readAsBytes();
+                        final fileName = picked.name;
                         if (fileName.toString().endsWith(".jpg") ||
                             fileName.toString().endsWith(".png")) {
                           _nomImage = fileName;
 
-                                setState(() {});
-                          //addImage(fileName, fileBytes);
+                          setState(() {
+                            imageIsPicked = true;
+                          });
+                          uploadFile(fileName, 'images', fileBytes);
                         }
                       }
+                      onTextChange();
                     },
                   ),
                 ),
-
               ),
             ),
             Text(
               _nomImage,
-              style: TextStyle(
+              style: const TextStyle(
                   color: AppColors.darkGrey,
                   fontSize: 10,
                   fontWeight: FontWeight.bold),
             ),
           ],
         ),
-
-
-
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {  },
-        tooltip: 'Valider',
-        child: const Icon(Icons.check),
-      ),
+      floatingActionButton: _isButtonDisabled == false
+          ? FloatingActionButton(
+              onPressed: () async {
+                createTheme(
+                    titleController.text, descController.text, _nomImage);
+                // setState(() {});
+                Navigator.pop(context);
+              },
+              tooltip: 'Validate',
+              child: const Icon(Icons.check),
+            )
+          : Container(),
     );
+  }
+
+  void onTextChange() {
+    if (descController.text.isNotEmpty &&
+        titleController.text.isNotEmpty &&
+        imageIsPicked) {
+      setState(() {
+        _isButtonDisabled = false;
+      });
+    } else {
+      setState(() {
+        _isButtonDisabled = true;
+      });
+    }
   }
 }

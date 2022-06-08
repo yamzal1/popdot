@@ -62,7 +62,7 @@ class SoundAdapter extends TypeAdapter<Sound> {
     return Sound(
       name: fields[0] as String,
       fullpath: fields[1] as String,
-      icon: fields[2] as String,
+      image: fields[2] as String,
     );
   }
 
@@ -75,7 +75,7 @@ class SoundAdapter extends TypeAdapter<Sound> {
       ..writeByte(1)
       ..write(obj.fullpath)
       ..writeByte(2)
-      ..write(obj.icon);
+      ..write(obj.image);
   }
 
   @override
