@@ -147,15 +147,12 @@ class _HomePageState extends State<HomePage> {
                                         );
                                         setState(() {});
                                         ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                          content: Text("Thème ajouté !"),
-                                        ));
-                                        // var picked = await ImagePicker()
-                                        //     .pickImage(
-                                        //         source: ImageSource.camera);
-                                        //
-                                        // uploadFile('upload_test.jpg', 'images',
-                                        //     await picked?.readAsBytes());
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                "Theme added successfully"),
+                                          ),
+                                        );
                                       },
                                     ),
                                   ),
@@ -238,12 +235,6 @@ class _HomePageState extends State<HomePage> {
                                         },
                                       );
                                       setState(() {});
-                                      // var picked = await ImagePicker()
-                                      //     .pickImage(
-                                      //         source: ImageSource.camera);
-                                      //
-                                      // uploadFile('upload_test.jpg', 'images',
-                                      //     await picked?.readAsBytes());
                                     },
                                   ),
                                 ),
@@ -310,15 +301,13 @@ class _HomePageState extends State<HomePage> {
                 } else {
                   child = Ink.image(
                     key: const ValueKey(1),
-                    // image: Image.asset('assets/images/' + backgroundImage).image,
                     image: NetworkImage(snapshot.data as String),
-                    //IMAGE NOIR ET BLANC
                     colorFilter: ColorFilter.mode(
                         Colors.black.withOpacity(0.85), BlendMode.dstATop),
                     fit: BoxFit.cover,
                     child: InkWell(
-                      onLongPress: () {
-                        showBottomSheet(
+                      onLongPress: () async {
+                        await showBottomSheet(
                           context: context,
                           builder: (context) {
                             return Wrap(
@@ -438,6 +427,8 @@ class _HomePageState extends State<HomePage> {
                                                         child: InkWell(
                                                           onTap: () {
                                                             deleteTheme(title);
+                                                            Navigator.pop(
+                                                                context);
                                                           },
                                                         ),
                                                       ),
@@ -471,7 +462,7 @@ class _HomePageState extends State<HomePage> {
                                                       child: Material(
                                                         color: Colors.blue,
                                                         child: InkWell(
-                                                          onTap: () => {
+                                                          onTap: () {
                                                             updateTheme(
                                                                 title,
                                                                 titleController
@@ -479,7 +470,9 @@ class _HomePageState extends State<HomePage> {
                                                                 descriptionController
                                                                     .text,
                                                                 newImage,
-                                                                [])
+                                                                []);
+                                                            Navigator.pop(
+                                                                context);
                                                           },
                                                         ),
                                                       ),
@@ -507,6 +500,7 @@ class _HomePageState extends State<HomePage> {
                             );
                           },
                         );
+                        setState(() {});
                       },
                       onTap: () {
                         Navigator.push(
@@ -537,7 +531,7 @@ class _HomePageState extends State<HomePage> {
                   Align(
                     alignment: Alignment.bottomLeft,
                     child: Text(
-                      title, //TITRE DU THEME SUR LES CARTES
+                      title,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,

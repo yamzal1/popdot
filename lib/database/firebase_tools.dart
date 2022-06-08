@@ -48,10 +48,10 @@ Future<void> makeABunchaThemes() async {
   await box.close();
 }
 
-Future<void> createTheme(title, description, image) async {
+Future<void> createTheme(title, description, String image) async {
   var box = await Hive.openBox<JukeboxTheme>('themes');
   box.add(JukeboxTheme(
-      title: title, description: description, image: image, sounds: []));
+      title: title, description: description, image: image.replaceAll(' ', ''), sounds: []));
   box.close();
 }
 
@@ -60,8 +60,6 @@ Future<void> deleteTheme(title) async {
   var i = 0;
   for (var theme in box.values) {
     if (theme.title == title) {
-      print(title);
-
       box.deleteAt(i);
     }
 
@@ -71,7 +69,7 @@ Future<void> deleteTheme(title) async {
   box.close();
 }
 
-Future<void> updateTheme(title, newTitle, description, image, sounds) async {
+Future<void> updateTheme(title, newTitle, description, String image, sounds) async {
   var box = await Hive.openBox<JukeboxTheme>('themes');
 
   var i = 0;
@@ -87,7 +85,7 @@ Future<void> updateTheme(title, newTitle, description, image, sounds) async {
           JukeboxTheme(
               title: newTitle,
               description: description,
-              image: image,
+              image: image.replaceAll(' ', ''),
               sounds: newSounds));
     }
 
@@ -95,6 +93,32 @@ Future<void> updateTheme(title, newTitle, description, image, sounds) async {
   }
 
   box.close();
+}
+
+Future<void> updateSound(themeName, newTitle, image) async {
+  var box = await Hive.openBox<JukeboxTheme>('themes');
+
+  var i = 0;
+  for (var theme in box.values) {
+    if (theme.title == themeName) {
+      for (var sound in theme.sounds) {
+        var newSound =
+            Sound(name: newTitle, fullpath: sound.fullpath, image: image);
+
+        theme.sounds.remove(sound);
+        theme.sounds.add(newSound);
+      }
+
+      box.putAt(
+        i,
+        JukeboxTheme(
+            title: theme.title,
+            description: theme.description,
+            image: theme.image,
+            sounds: theme.sounds),
+      );
+    }
+  }
 }
 
 Future<List> getThemes() async {
@@ -114,6 +138,7 @@ Future<List> getMadeForYouThemes() async {
     QuerySnapshot soundsQuerySnapshot =
         await doc.reference.collection('sounds').get();
     List<Sound> sounds = [];
+
     for (var soundDoc in soundsQuerySnapshot.docs) {
       Sound newSound = Sound(
           name: soundDoc.id,
@@ -151,10 +176,11 @@ Future<List> getSounds(themeName, isBaseTheme) async {
       .sounds;
 }
 
-Future<void> addSound(themeName, String name, filepath, image) async {
+Future<void> addSound(themeName, String name, String filepath, String image) async {
   var box = await Hive.openBox<JukeboxTheme>('themes');
 
-  var newSound = Sound(name: name, fullpath: filepath, image: image);
+  var newSound =
+      Sound(name: name, fullpath: filepath.replaceAll(' ', ''), image: image.replaceAll(' ', ''));
   var theme = (box.values
       .toList()
       .where((element) => element.title == themeName)

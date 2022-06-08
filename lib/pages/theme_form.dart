@@ -153,7 +153,7 @@ class _ThemeFormState extends State<ThemeForm> {
               onPressed: () async {
                 createTheme(
                     titleController.text, descController.text, _nomImage);
-                setState(() {}); // Peut être inutile
+                // setState(() {});
                 Navigator.pop(context);
               },
               tooltip: 'Validate',

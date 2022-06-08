@@ -431,14 +431,11 @@ else {
                                                         color: Colors.blue,
                                                         child: InkWell(
                                                           onTap: () => {
-                                                            updateTheme(
-                                                                title,
+                                                            updateSound(
+                                                                widget.title,
                                                                 titleController
                                                                     .text,
-                                                                descriptionController
-                                                                    .text,
-                                                                newImage,
-                                                                [])
+                                                                newImage)
                                                           },
                                                         ),
                                                       ),
@@ -466,6 +463,7 @@ else {
                             );
                           },
                         );
+                        setState(() {});
                       },
                       onTap: () {
                         _playAudio(title);
