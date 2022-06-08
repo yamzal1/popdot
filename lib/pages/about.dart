@@ -15,7 +15,7 @@ class About extends StatelessWidget {
           title: Center(
             child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.15,
-              child: Image.asset('images/popdot_web_qr_code.png'),
+              child: Image.asset('assets/images/popdot_web_qr_code.png'),
             ),
           ),
           toolbarHeight: MediaQuery.of(context).size.height * 0.2,

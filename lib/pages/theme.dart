@@ -10,7 +10,7 @@ class ClassTheme extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("Nom du thème"),
+          title: const Text("Theme name"),
         ),
         body: Center(
           child: Row(

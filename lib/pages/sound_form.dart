@@ -55,7 +55,6 @@ class _SoundFormState extends State<SoundForm> {
                 style: TextStyle(
                   fontSize: 35,
                   fontWeight: FontWeight.bold,
-                  // color: Theme.of(context).primaryColor,
                   color: AppColors.darkGrey,
                 ),
               ),
@@ -69,7 +68,6 @@ class _SoundFormState extends State<SoundForm> {
                   borderRadius: BorderRadius.circular(25.0),
                   borderSide: const BorderSide(),
                 ),
-                //fillColor: Colors.green
               ),
               validator: (val) {
                 if (val!.isEmpty) {

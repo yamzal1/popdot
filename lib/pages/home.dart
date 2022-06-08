@@ -306,200 +306,207 @@ class _HomePageState extends State<HomePage> {
                         Colors.black.withOpacity(0.85), BlendMode.dstATop),
                     fit: BoxFit.cover,
                     child: InkWell(
-                      onLongPress: () async {
-                        await showBottomSheet(
-                          context: context,
-                          builder: (context) {
-                            return Wrap(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 32.0, bottom: 32.0),
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          width: 200,
-                                          height: 200,
-                                          child: Card(
-                                            clipBehavior: Clip.antiAlias,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(32),
-                                            ),
-                                            child: Stack(
-                                              children: [
-                                                Ink.image(
-                                                  image: NetworkImage(
-                                                      snapshot.data as String),
-                                                  colorFilter: ColorFilter.mode(
-                                                      Colors.black
-                                                          .withOpacity(0.85),
-                                                      BlendMode.dstATop),
-                                                  fit: BoxFit.cover,
-                                                  child: InkWell(
-                                                    onTap: () async {
-                                                      var picked =
-                                                          await ImagePicker()
-                                                              .pickImage(
-                                                                  source:
-                                                                      ImageSource
-                                                                          .camera);
+                      onLongPress: () {
+                        if (!isBaseTheme) {
+                          showBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return Wrap(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 32.0, bottom: 32.0),
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            width: 200,
+                                            height: 200,
+                                            child: Card(
+                                              clipBehavior: Clip.antiAlias,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(32),
+                                              ),
+                                              child: Stack(
+                                                children: [
+                                                  Ink.image(
+                                                    image: NetworkImage(snapshot
+                                                        .data as String),
+                                                    colorFilter:
+                                                        ColorFilter.mode(
+                                                            Colors.black
+                                                                .withOpacity(
+                                                                    0.85),
+                                                            BlendMode.dstATop),
+                                                    fit: BoxFit.cover,
+                                                    child: InkWell(
+                                                      onTap: () async {
+                                                        var picked =
+                                                            await ImagePicker()
+                                                                .pickImage(
+                                                                    source: ImageSource
+                                                                        .camera);
 
-                                                      uploadFile(
-                                                          'upload_test.jpg',
-                                                          'images',
-                                                          await picked
-                                                              ?.readAsBytes());
-                                                    },
-                                                  ),
-                                                ),
-                                                const Padding(
-                                                  padding: EdgeInsets.all(16.0),
-                                                  child: Align(
-                                                    alignment:
-                                                        Alignment.bottomRight,
-                                                    child: Icon(
-                                                      Icons.edit_outlined,
-                                                      color: Colors.white,
+                                                        uploadFile(
+                                                            'upload_test.jpg',
+                                                            'images',
+                                                            await picked
+                                                                ?.readAsBytes());
+                                                      },
                                                     ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 64.0,
-                                              right: 64.0,
-                                              top: 16.0),
-                                          child: TextField(
-                                            onChanged: (value) {
-                                              newTitle = value;
-                                            },
-                                            controller: titleController,
-                                            decoration: const InputDecoration(
-                                              labelText: 'Title',
-                                              suffixIcon:
-                                                  Icon(Icons.edit_outlined),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 64.0,
-                                              right: 64.0,
-                                              top: 16.0,
-                                              bottom: 16.0),
-                                          child: TextField(
-                                            keyboardType:
-                                                TextInputType.multiline,
-                                            maxLines: null,
-                                            controller: descriptionController,
-                                            decoration: const InputDecoration(
-                                              labelText: 'Description',
-                                              suffixIcon:
-                                                  Icon(Icons.edit_outlined),
-                                            ),
-                                          ),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Card(
-                                                elevation: 2,
-                                                clipBehavior: Clip.antiAlias,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(90),
-                                                ),
-                                                child: Stack(
-                                                  children: [
-                                                    Positioned.fill(
-                                                      child: Material(
-                                                        color: Colors.red,
-                                                        child: InkWell(
-                                                          onTap: () {
-                                                            deleteTheme(title);
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const Padding(
-                                                      padding:
-                                                          EdgeInsets.all(8.0),
+                                                  const Padding(
+                                                    padding:
+                                                        EdgeInsets.all(16.0),
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.bottomRight,
                                                       child: Icon(
-                                                        Icons.delete_outlined,
+                                                        Icons.edit_outlined,
                                                         color: Colors.white,
-                                                        size: 25.0,
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Card(
-                                                elevation: 2,
-                                                clipBehavior: Clip.antiAlias,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(90),
-                                                ),
-                                                child: Stack(
-                                                  children: [
-                                                    Positioned.fill(
-                                                      child: Material(
-                                                        color: Colors.blue,
-                                                        child: InkWell(
-                                                          onTap: () {
-                                                            updateTheme(
-                                                                title,
-                                                                titleController
-                                                                    .text,
-                                                                descriptionController
-                                                                    .text,
-                                                                newImage,
-                                                                []);
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const Padding(
-                                                      padding:
-                                                          EdgeInsets.all(8.0),
-                                                      child: Icon(
-                                                        Icons.done,
-                                                        color: Colors.white,
-                                                        size: 25.0,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 64.0,
+                                                right: 64.0,
+                                                top: 16.0),
+                                            child: TextField(
+                                              onChanged: (value) {
+                                                newTitle = value;
+                                              },
+                                              controller: titleController,
+                                              decoration: const InputDecoration(
+                                                labelText: 'Title',
+                                                suffixIcon:
+                                                    Icon(Icons.edit_outlined),
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ],
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 64.0,
+                                                right: 64.0,
+                                                top: 16.0,
+                                                bottom: 16.0),
+                                            child: TextField(
+                                              keyboardType:
+                                                  TextInputType.multiline,
+                                              maxLines: null,
+                                              controller: descriptionController,
+                                              decoration: const InputDecoration(
+                                                labelText: 'Description',
+                                                suffixIcon:
+                                                    Icon(Icons.edit_outlined),
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Card(
+                                                  elevation: 2,
+                                                  clipBehavior: Clip.antiAlias,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            90),
+                                                  ),
+                                                  child: Stack(
+                                                    children: [
+                                                      Positioned.fill(
+                                                        child: Material(
+                                                          color: Colors.red,
+                                                          child: InkWell(
+                                                            onTap: () {
+                                                              deleteTheme(
+                                                                  title);
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const Padding(
+                                                        padding:
+                                                            EdgeInsets.all(8.0),
+                                                        child: Icon(
+                                                          Icons.delete_outlined,
+                                                          color: Colors.white,
+                                                          size: 25.0,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Card(
+                                                  elevation: 2,
+                                                  clipBehavior: Clip.antiAlias,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            90),
+                                                  ),
+                                                  child: Stack(
+                                                    children: [
+                                                      Positioned.fill(
+                                                        child: Material(
+                                                          color: Colors.blue,
+                                                          child: InkWell(
+                                                            onTap: () {
+                                                              updateTheme(
+                                                                  title,
+                                                                  titleController
+                                                                      .text,
+                                                                  descriptionController
+                                                                      .text,
+                                                                  newImage,
+                                                                  []);
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const Padding(
+                                                        padding:
+                                                            EdgeInsets.all(8.0),
+                                                        child: Icon(
+                                                          Icons.done,
+                                                          color: Colors.white,
+                                                          size: 25.0,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                                ],
+                              );
+                            },
+                          );
+                        }
                         setState(() {});
                       },
                       onTap: () {

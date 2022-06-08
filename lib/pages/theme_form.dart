@@ -51,7 +51,6 @@ class _ThemeFormState extends State<ThemeForm> {
                 style: TextStyle(
                   fontSize: 35,
                   fontWeight: FontWeight.bold,
-                  // color: Theme.of(context).primaryColor,
                   color: AppColors.darkGrey,
                 ),
               ),
@@ -153,7 +152,6 @@ class _ThemeFormState extends State<ThemeForm> {
               onPressed: () async {
                 createTheme(
                     titleController.text, descController.text, _nomImage);
-                // setState(() {});
                 Navigator.pop(context);
               },
               tooltip: 'Validate',
