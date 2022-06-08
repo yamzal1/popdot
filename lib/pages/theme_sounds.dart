@@ -178,7 +178,7 @@ else {
 
 
                     SizedBox(
-                      height: MediaQuery.of(context).size.height/1.5,
+                      height: MediaQuery.of(context).size.height/2,
                         child: NoSound()),
                   ],
                 );
